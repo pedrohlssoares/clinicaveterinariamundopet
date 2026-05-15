@@ -275,18 +275,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`consulta_pagamento` (
   `idconsulta_pagamento` INT NOT NULL AUTO_INCREMENT,
-  `pagamento_idpagamento` INT NOT NULL,
-  `consulta_idconsulta` INT NOT NULL,
+  `pagamento_idpagamentofk` INT NOT NULL,
+  `consulta_idconsultafk` INT NOT NULL,
   PRIMARY KEY (`idconsulta_pagamento`),
-  INDEX `fk_consulta_pagamento_pagamento1_idx` (`pagamento_idpagamento` ASC) VISIBLE,
-  INDEX `fk_consulta_pagamento_consulta1_idx` (`consulta_idconsulta` ASC) VISIBLE,
+  INDEX `fk_consulta_pagamento_pagamento1_idx` (`pagamento_idpagamentofk` ASC) VISIBLE,
+  INDEX `fk_consulta_pagamento_consulta1_idx` (`consulta_idconsultafk` ASC) VISIBLE,
   CONSTRAINT `fk_consulta_pagamento_pagamento1`
-    FOREIGN KEY (`pagamento_idpagamento`)
+    FOREIGN KEY (`pagamento_idpagamentofk`)
     REFERENCES `mundopet`.`pagamento` (`idpagamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_consulta_pagamento_consulta1`
-    FOREIGN KEY (`consulta_idconsulta`)
+    FOREIGN KEY (`consulta_idconsultafk`)
     REFERENCES `mundopet`.`consulta` (`idconsulta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -294,9 +294,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mundopet`.`prescricaoprescricaopagamentofk`
+-- Table `mundopet`.`prescricaoprescricaopagamento`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mundopet`.`prescricaoprescricaopagamentofk` (
+CREATE TABLE IF NOT EXISTS `mundopet`.`prescricaoprescricaopagamento` (
   `idprescricao_pagamento` INT NOT NULL AUTO_INCREMENT,
   `prescricaoprescricaopagamentofk` INT NOT NULL,
   `pagamentoprescricaopagamentofk` INT NOT NULL,
