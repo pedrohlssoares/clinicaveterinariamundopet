@@ -2,7 +2,7 @@
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Schema mundopet
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`cliente` (
   `celular` VARCHAR(11) NOT NULL,
   `enderecoclientefk` INT NOT NULL,
   PRIMARY KEY (`idcliente`),
-  INDEX `fk_clientes_endereco_idx` (`enderecoclientefk` ASC) VISIBLE,
+  INDEX `fk_clientes_endereco_idx` (`enderecoclientefk` ASC),
   CONSTRAINT `fk_clientes_endereco`
     FOREIGN KEY (`enderecoclientefk`)
     REFERENCES `mundopet`.`endereco` (`idendereco`)
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`funcionario` (
   `salario` DECIMAL(6,2) NOT NULL,
   `enderecofuncionariofk` INT NOT NULL,
   PRIMARY KEY (`idfuncionario`),
-  INDEX `fk_funcionario_endereco1_idx` (`enderecofuncionariofk` ASC) VISIBLE,
+  INDEX `fk_funcionario_endereco1_idx` (`enderecofuncionariofk` ASC),
   CONSTRAINT `fk_funcionario_endereco1`
     FOREIGN KEY (`enderecofuncionariofk`)
     REFERENCES `mundopet`.`endereco` (`idendereco`)
@@ -75,9 +75,9 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`veterinario` (
   `idveterinario` INT NOT NULL AUTO_INCREMENT,
   `crmv` VARCHAR(11) NOT NULL,
   `funcionarioveterinariofk` INT NOT NULL,
-  `descricao` VARCHAR(120) NULL,
+  `descricao` TEXT(400) NULL,
   PRIMARY KEY (`idveterinario`),
-  INDEX `fk_veterinario_funcionario1_idx` (`funcionarioveterinariofk` ASC) VISIBLE,
+  INDEX `fk_veterinario_funcionario1_idx` (`funcionarioveterinariofk` ASC),
   CONSTRAINT `fk_veterinario_funcionario1`
     FOREIGN KEY (`funcionarioveterinariofk`)
     REFERENCES `mundopet`.`funcionario` (`idfuncionario`)
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pet` (
   `idade` VARCHAR(45) NOT NULL,
   `clientepetfk` INT NOT NULL,
   PRIMARY KEY (`idpet`),
-  INDEX `fk_pet_clientes1_idx` (`clientepetfk` ASC) VISIBLE,
+  INDEX `fk_pet_clientes1_idx` (`clientepetfk` ASC),
   CONSTRAINT `fk_pet_clientes1`
     FOREIGN KEY (`clientepetfk`)
     REFERENCES `mundopet`.`cliente` (`idcliente`)
@@ -107,18 +107,54 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mundopet`.`historico`
+-- Table `mundopet`.`produto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mundopet`.`historico` (
+CREATE TABLE IF NOT EXISTS `mundopet`.`produto` (
+  `idproduto` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `quantidade` INT(3) NOT NULL,
+  `descricao` TEXT(400) NOT NULL,
+  `preco` DECIMAL(6,2) NOT NULL,
+  PRIMARY KEY (`idproduto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mundopet`.`vacina`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mundopet`.`vacina` (
+  `idvacina` INT NOT NULL AUTO_INCREMENT,
+  `produtovacinafk` INT NOT NULL,
+  `ativo` VARCHAR(45) NOT NULL,
+  `lote` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`idvacina`),
+  INDEX `fk_vacinas_produtos1_idx` (`produtovacinafk` ASC),
+  CONSTRAINT `fk_vacinas_produtos1`
+    FOREIGN KEY (`produtovacinafk`)
+    REFERENCES `mundopet`.`produto` (`idproduto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mundopet`.`historico_vacinacao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mundopet`.`historico_vacinacao` (
   `idhistorico` INT NOT NULL AUTO_INCREMENT,
-  `consultas` VARCHAR(45) NOT NULL,
-  `tratamentos` VARCHAR(45) NOT NULL,
-  `pethistoricofk` INT NOT NULL,
+  `pethistorico_vacinacaofk` INT NOT NULL,
+  `vacinahistorico_vacinacaofk` INT NOT NULL,
   PRIMARY KEY (`idhistorico`),
-  INDEX `fk_historico_pet1_idx` (`pethistoricofk` ASC) VISIBLE,
+  INDEX `fk_historico_pet1_idx` (`pethistorico_vacinacaofk` ASC),
+  INDEX `fk_historico_vacinacao_vacina1_idx` (`vacinahistorico_vacinacaofk` ASC),
   CONSTRAINT `fk_historico_pet1`
-    FOREIGN KEY (`pethistoricofk`)
+    FOREIGN KEY (`pethistorico_vacinacaofk`)
     REFERENCES `mundopet`.`pet` (`idpet`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_historico_vacinacao_vacina1`
+    FOREIGN KEY (`vacinahistorico_vacinacaofk`)
+    REFERENCES `mundopet`.`vacina` (`idvacina`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -142,10 +178,11 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`consulta` (
   `veterinarioconsultafk` INT NOT NULL,
   `salaconsultafk` INT NOT NULL,
   `data` DATE NOT NULL,
+  `processos_feitos` TEXT(400) NOT NULL,
   PRIMARY KEY (`idconsulta`),
-  INDEX `fk_consulta_pet1_idx` (`petconsultafk` ASC) VISIBLE,
-  INDEX `fk_consulta_veterinario1_idx` (`veterinarioconsultafk` ASC) VISIBLE,
-  INDEX `fk_consulta_sala1_idx` (`salaconsultafk` ASC) VISIBLE,
+  INDEX `fk_consulta_pet1_idx` (`petconsultafk` ASC),
+  INDEX `fk_consulta_veterinario1_idx` (`veterinarioconsultafk` ASC),
+  INDEX `fk_consulta_sala1_idx` (`salaconsultafk` ASC),
   CONSTRAINT `fk_consulta_pet1`
     FOREIGN KEY (`petconsultafk`)
     REFERENCES `mundopet`.`pet` (`idpet`)
@@ -165,19 +202,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mundopet`.`produto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mundopet`.`produto` (
-  `idproduto` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NOT NULL,
-  `quantidade` INT(3) NOT NULL,
-  `descricao` VARCHAR(120) NOT NULL,
-  `preco` DECIMAL(6,2) NOT NULL,
-  PRIMARY KEY (`idproduto`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mundopet`.`remedio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`remedio` (
@@ -186,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`remedio` (
   `ativo` VARCHAR(40) NOT NULL,
   `lote` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idremedio`),
-  INDEX `fk_remedio_produtos1_idx` (`produtoremediofk` ASC) VISIBLE,
+  INDEX `fk_remedio_produtos1_idx` (`produtoremediofk` ASC),
   CONSTRAINT `fk_remedio_produtos1`
     FOREIGN KEY (`produtoremediofk`)
     REFERENCES `mundopet`.`produto` (`idproduto`)
@@ -203,8 +227,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`prescricao` (
   `consultaprescricaofk` INT NOT NULL,
   `remedioprescricaofk` INT NOT NULL,
   PRIMARY KEY (`idprescricao`),
-  INDEX `fk_prescricao_consulta1_idx` (`consultaprescricaofk` ASC) VISIBLE,
-  INDEX `fk_prescricao_remedio1_idx` (`remedioprescricaofk` ASC) VISIBLE,
+  INDEX `fk_prescricao_consulta1_idx` (`consultaprescricaofk` ASC),
+  INDEX `fk_prescricao_remedio1_idx` (`remedioprescricaofk` ASC),
   CONSTRAINT `fk_prescricao_consulta1`
     FOREIGN KEY (`consultaprescricaofk`)
     REFERENCES `mundopet`.`consulta` (`idconsulta`)
@@ -224,7 +248,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mundopet`.`forma_pagamento` (
   `idforma_pagamento` INT NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
-  `descricao` VARCHAR(120) NOT NULL,
+  `descricao` TEXT(400) NOT NULL,
   PRIMARY KEY (`idforma_pagamento`))
 ENGINE = InnoDB;
 
@@ -238,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
   `valor` DECIMAL(6,2) NOT NULL,
   `formapagamentofk` INT NOT NULL,
   PRIMARY KEY (`idpagamento`),
-  INDEX `fk_pagamento_forma_pagamento1_idx` (`formapagamentofk` ASC) VISIBLE,
+  INDEX `fk_pagamento_forma_pagamento1_idx` (`formapagamentofk` ASC),
   CONSTRAINT `fk_pagamento_forma_pagamento1`
     FOREIGN KEY (`formapagamentofk`)
     REFERENCES `mundopet`.`forma_pagamento` (`idforma_pagamento`)
@@ -255,8 +279,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`venda` (
   `pagamentovendafk` INT NOT NULL,
   `produtovendafk` INT NOT NULL,
   PRIMARY KEY (`idvenda`),
-  INDEX `fk_venda_pagamento1_idx` (`pagamentovendafk` ASC) VISIBLE,
-  INDEX `fk_venda_produtos1_idx` (`produtovendafk` ASC) VISIBLE,
+  INDEX `fk_venda_pagamento1_idx` (`pagamentovendafk` ASC),
+  INDEX `fk_venda_produtos1_idx` (`produtovendafk` ASC),
   CONSTRAINT `fk_venda_pagamento1`
     FOREIGN KEY (`pagamentovendafk`)
     REFERENCES `mundopet`.`pagamento` (`idpagamento`)
@@ -275,18 +299,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`consulta_pagamento` (
   `idconsulta_pagamento` INT NOT NULL AUTO_INCREMENT,
-  `pagamento_idpagamentofk` INT NOT NULL,
-  `consulta_idconsultafk` INT NOT NULL,
+  `pagamentoconsulta_pagamentofk` INT NOT NULL,
+  `consultaconsulta_pagamentofk` INT NOT NULL,
   PRIMARY KEY (`idconsulta_pagamento`),
-  INDEX `fk_consulta_pagamento_pagamento1_idx` (`pagamento_idpagamentofk` ASC) VISIBLE,
-  INDEX `fk_consulta_pagamento_consulta1_idx` (`consulta_idconsultafk` ASC) VISIBLE,
+  INDEX `fk_consulta_pagamento_pagamento1_idx` (`pagamentoconsulta_pagamentofk` ASC),
+  INDEX `fk_consulta_pagamento_consulta1_idx` (`consultaconsulta_pagamentofk` ASC),
   CONSTRAINT `fk_consulta_pagamento_pagamento1`
-    FOREIGN KEY (`pagamento_idpagamentofk`)
+    FOREIGN KEY (`pagamentoconsulta_pagamentofk`)
     REFERENCES `mundopet`.`pagamento` (`idpagamento`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_consulta_pagamento_consulta1`
-    FOREIGN KEY (`consulta_idconsultafk`)
+    FOREIGN KEY (`consultaconsulta_pagamentofk`)
     REFERENCES `mundopet`.`consulta` (`idconsulta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -301,8 +325,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`prescricaoprescricaopagamento` (
   `prescricaoprescricaopagamentofk` INT NOT NULL,
   `pagamentoprescricaopagamentofk` INT NOT NULL,
   PRIMARY KEY (`idprescricao_pagamento`),
-  INDEX `fk_prescricao_pagamento_prescricao1_idx` (`prescricaoprescricaopagamentofk` ASC) VISIBLE,
-  INDEX `fk_prescricao_pagamento_pagamento1_idx` (`pagamentoprescricaopagamentofk` ASC) VISIBLE,
+  INDEX `fk_prescricao_pagamento_prescricao1_idx` (`prescricaoprescricaopagamentofk` ASC),
+  INDEX `fk_prescricao_pagamento_pagamento1_idx` (`pagamentoprescricaopagamentofk` ASC),
   CONSTRAINT `fk_prescricao_pagamento_prescricao1`
     FOREIGN KEY (`prescricaoprescricaopagamentofk`)
     REFERENCES `mundopet`.`prescricao` (`idprescricao`)
@@ -311,24 +335,6 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`prescricaoprescricaopagamento` (
   CONSTRAINT `fk_prescricao_pagamento_pagamento1`
     FOREIGN KEY (`pagamentoprescricaopagamentofk`)
     REFERENCES `mundopet`.`pagamento` (`idpagamento`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mundopet`.`vacina`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mundopet`.`vacina` (
-  `idvacina` INT NOT NULL AUTO_INCREMENT,
-  `produtovacinafk` INT NOT NULL,
-  `ativo` VARCHAR(45) NOT NULL,
-  `lote` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`idvacina`),
-  INDEX `fk_vacinas_produtos1_idx` (`produtovacinafk` ASC) VISIBLE,
-  CONSTRAINT `fk_vacinas_produtos1`
-    FOREIGN KEY (`produtovacinafk`)
-    REFERENCES `mundopet`.`produto` (`idproduto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
