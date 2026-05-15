@@ -2,13 +2,13 @@
 
 class consulta_pagamento{
     private $idconsulta_pagamento;
-    private $pagamento_idpagamentofk;
-    private $consulta_idconsultafk;
+    private $pagamentoconsulta_pagamentofk;
+    private $consultaconsulta_pagamentofk;
 
-    public function __construct($idconsulta_pagamento, $pagamento_idpagamentofk, $consulta_idconsultafk){
+    public function __construct($idconsulta_pagamento, $pagamentoconsulta_pagamentofk, $consultaconsulta_pagamentofk){
         $this->idconsulta_pagamento = $idconsulta_pagamento;
-        $this->pagamento_idpagamentofk = $pagamento_idpagamentofk;
-        $this->consulta_idconsultafk = $consulta_idconsultafk;
+        $this->$pagamentoconsulta_pagamentofk = $pagamentoconsulta_pagamentofk;
+        $this->$consultaconsulta_pagamentofk = $consultaconsulta_pagamentofk;
     }
 
     public function __get($key){
