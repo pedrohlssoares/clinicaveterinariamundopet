@@ -1,6 +1,9 @@
 <?php
 
+include "config/conexao.php";
+
 class enderecoDao{
+
 
 public function create(endereco $endereco){
     try{
@@ -24,13 +27,13 @@ public function read(){
     try{
         $pdo = conexao::conectar();
         $sql = "SELECT * FROM endereco ORDER BY cidade";
-        $result = $pdo->query(sql);
-        lista = [];
+        $result = $pdo->query($sql);
+        $lista = [];
         foreach($result as $linha){
             $lista[] = new endereco(
                 $linha["idendereco"],
                 $linha["rua"],
-                $linha["cidade"],0
+                $linha["cidade"],
                 $linha["bairro"],
                 $linha["numero"],
                 $linha["complemento"]
