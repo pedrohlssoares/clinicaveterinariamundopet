@@ -165,6 +165,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`sala` (
   `numero` INT NOT NULL AUTO_INCREMENT,
+  `tipo` VARCHAR(45) NOT NULL,
+  `descricao` TEXT(400) NOT NULL,
   PRIMARY KEY (`numero`))
 ENGINE = InnoDB;
 
