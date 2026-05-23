@@ -26,7 +26,7 @@ public function read(){
     try{
         $pdo = conexao::conectar();
         $sql = "SELECT * FROM produto ORDER BY tipo";
-        $result = $pdo->query(sql);
+        $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
             $lista[] = new produto(
@@ -70,7 +70,8 @@ public function update(produto $produto){
         $query = $pdo->prepare($sql);
         $query->execute([
             $produto->tipo, 
-            $produto->descricao]);
+            $produto->descricao,
+            $produto->idproduto]);
         conexao::desconectar();
         return true;
     }catch (PDOException $exception){

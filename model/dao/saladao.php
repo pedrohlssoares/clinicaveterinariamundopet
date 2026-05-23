@@ -7,7 +7,7 @@ class salaDao{
 public function create(sala $sala){
     try{
         $pdo = conexao::conectar();
-        $sql = "INSERT INTO forma_pagamento(tipo, descricao) VALUES (?, ?)";
+        $sql = "INSERT INTO sala(tipo, descricao) VALUES (?, ?)";
         $query = $pdo->prepare($sql);
         $query->execute([
             $sala->tipo,
@@ -24,7 +24,7 @@ public function read(){
     try{
         $pdo = conexao::conectar();
         $sql = "SELECT * FROM sala ORDER BY tipo";
-        $result = $pdo->query(sql);
+        $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
             $lista[] = new sala(
@@ -64,7 +64,8 @@ public function update(sala $sala){
         $query = $pdo->prepare($sql);
         $query->execute([
             $sala->tipo, 
-            $sala->descricao]);
+            $sala->descricao,
+            $sala->idsala]);
         conexao::desconectar();
         return true;
     }catch (PDOException $exception){

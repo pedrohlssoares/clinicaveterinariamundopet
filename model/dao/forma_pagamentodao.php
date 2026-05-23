@@ -24,7 +24,7 @@ public function read(){
     try{
         $pdo = conexao::conectar();
         $sql = "SELECT * FROM forma_pagamento ORDER BY tipo";
-        $result = $pdo->query(sql);
+        $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
             $lista[] = new forma_pagamento(
@@ -64,7 +64,8 @@ public function update(forma_pagamento $forma_pagamento){
         $query = $pdo->prepare($sql);
         $query->execute([
             $forma_pagamento->tipo, 
-            $forma_pagamento->descricao]);
+            $forma_pagamento->descricao,
+            $forma_pagamento->idforma_pagamento]);
         conexao::desconectar();
         return true;
     }catch (PDOException $exception){
