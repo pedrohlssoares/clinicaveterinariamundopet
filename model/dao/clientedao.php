@@ -1,13 +1,7 @@
-`idcliente` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(90) NOT NULL,
-  `cpf` VARCHAR(11) NOT NULL,
-  `email` VARCHAR(60) NOT NULL,
-  `celular` VARCHAR(11) NOT NULL,
-  `enderecoclientefk` INT NOT NULL
 
 <?php
 
-include "config/conexao.php";
+include_once __DIR__ . "/../../config/conexao.php";
 
 class clienteDao{
 

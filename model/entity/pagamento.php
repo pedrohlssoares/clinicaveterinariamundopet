@@ -2,13 +2,13 @@
 
 class pagamento{
     private $idpagamento;
-    private $pretacoes;
+    private $prestacoes;
     private $valor;
     private $formapagamentofk;
 
-    public function __construct($idpagamento, $pretacoes, $valor, $formapagamentofk){
+    public function __construct($idpagamento, $prestacoes, $valor, $formapagamentofk){
         $this->idpagamento = $idpagamento;
-        $this->pretacoes = $pretacoes;
+        $this->prestacoes = $prestacoes;
         $this->valor = $valor;
         $this->formapagamentofk = $formapagamentofk;
     }

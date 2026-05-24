@@ -1,6 +1,6 @@
 <?php
 
-include "config/conexao.php";
+include_once __DIR__ . "/../../config/conexao.php";
 
 class vacinaDao {
 
