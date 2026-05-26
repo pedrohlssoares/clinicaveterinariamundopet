@@ -8,7 +8,7 @@ include_once $base . "config/conexao.php";
 include_once $base . "model/entity/sala.php";
 include_once $base . "model/dao/saladao.php";
 
-$sdao = new sala();
+$sdao = new saladao();
 
 
 if (isset($_GET["numero"])) {
@@ -21,7 +21,10 @@ if (isset($_GET["numero"])) {
 
 if (isset($_POST["btGravar"])) {
     $s = new sala(
-        $_POST["numero"]
+        $_POST["numero"],
+        $_POST["tipo"],
+        $_POST["descricao"]
+
     );
 
     if ($_POST["numero"] == "") {
