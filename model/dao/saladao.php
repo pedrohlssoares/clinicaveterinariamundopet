@@ -28,7 +28,7 @@ public function read(){
         $lista = [];
         foreach($result as $linha){
             $lista[] = new sala(
-            $linha["idsala"],    
+            $linha["numero"],    
             $linha["tipo"],
             $linha["descricao"]
             );
@@ -73,12 +73,12 @@ public function update(sala $sala){
     }
 }
 
-public function delete($idsala){
+public function delete($numero){
     try{
         $pdo = conexao::conectar();
         $sql = "DELETE FROM sala WHERE idsala = ?";
         $query = $pdo->prepare($sql);
-        $query->execute([$idsala]);
+        $query->execute([$numero]);
         conexao::desconectar();
         return true;
     } catch (PDOException $exception){
