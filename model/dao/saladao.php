@@ -40,12 +40,12 @@ public function read(){
     }
 }
 
-public function readID($idsala){
+public function readID($numero){
     try{
         $pdo = conexao::conectar();
-        $sql = "SELECT * FROM sala WHERE idsala = ?";
+        $sql = "SELECT * FROM sala WHERE numero = ?";
         $query = $pdo->prepare($sql);
-        $query->execute([$idsala]);
+        $query->execute([$numero]);
         $lista = $query->fetch(PDO::FETCH_ASSOC);
         conexao::desconectar();
         return $lista;
@@ -60,7 +60,7 @@ public function update(sala $sala){
         $sql = "UPDATE sala SET 
         tipo =?,
         descricao = ?
-        WHERE idsala= ?";
+        WHERE numero= ?";
         $query = $pdo->prepare($sql);
         $query->execute([
             $sala->tipo, 
@@ -76,7 +76,7 @@ public function update(sala $sala){
 public function delete($numero){
     try{
         $pdo = conexao::conectar();
-        $sql = "DELETE FROM sala WHERE idsala = ?";
+        $sql = "DELETE FROM sala WHERE numero = ?";
         $query = $pdo->prepare($sql);
         $query->execute([$numero]);
         conexao::desconectar();
