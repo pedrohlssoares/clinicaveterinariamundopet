@@ -3,8 +3,10 @@
 class sala{
     private $numero;
 
-    public function __construct($numero){
+    public function __construct($numero, $tipo, $descricao){
         $this->numero = $numero;
+        $this->tipo = $tipo;
+        $this->descricao = $descricao;
     }
 
     public function __get($key){
