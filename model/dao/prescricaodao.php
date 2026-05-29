@@ -20,19 +20,39 @@ public function create(prescricao $prescricao){
     }
 }
 
-public function read(){
+public function readPorprescricao($idprescricao){
     try{
         $pdo = conexao::conectar();
-        $sql = "SELECT * FROM prescricao ORDER BY idprescricao";
-        $result = $pdo->query($sql);
+        
+        $sql = "SELECT 
+                    pre.idprescricao,
+                    pre.dosagem,
+                    prod.nome AS nome_medicamento,
+                    prod.descricao AS descricao_produto,
+                    rem.ativo AS principio_ativo
+                FROM prescricao pre
+                INNER JOIN remedio rem ON pre.remedioprescricaofk = rem.idremedio
+                INNER JOIN produto prod ON rem.produtoremediofk = prod.idproduto
+                WHERE pre.consultaprescricaofk = ?
+                ORDER BY prod.nome";
+                
+        $query = $pdo->prepare($sql);
+        $query->execute([$idprescricao]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        
         $lista = [];
         foreach($result as $linha){
             $lista[] = new prescricao(
                 $linha["idprescricao"],
-                $linha["consultaprescricaofk"],
-                $linha["remedioprescricaofk"]
+                null,
+                null,
+                $linha["dosagem"],
+                $linha["nome_medicamento"],
+                $linha["principio_ativo"],
+                $linha["descricao_produto"]
             );
         }
+        
         conexao::desconectar();
         return $lista;
     }catch(PDOException $exception){
