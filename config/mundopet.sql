@@ -228,6 +228,7 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`prescricao` (
   `idprescricao` INT NOT NULL AUTO_INCREMENT,
   `consultaprescricaofk` INT NOT NULL,
   `remedioprescricaofk` INT NOT NULL,
+  `dosagem` TEXT(400) NOT NULL,
   PRIMARY KEY (`idprescricao`),
   INDEX `fk_prescricao_consulta1_idx` (`consultaprescricaofk` ASC),
   INDEX `fk_prescricao_remedio1_idx` (`remedioprescricaofk` ASC),
