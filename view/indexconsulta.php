@@ -1,14 +1,11 @@
 <?php
 session_start();
 
-//fazer parte que inclua o pagamento e forma de pagamento
-
 $base = __DIR__ . '/../';  
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/consulta.php";
 include_once $base . "model/dao/consultadao.php";
-
 
 include __DIR__ . "/topo.html";
 

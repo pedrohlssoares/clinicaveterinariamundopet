@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-//select para escolher o funcionario a cadastrar como veterinario
-
 
 $base = __DIR__ . '/../';  
 
