@@ -1,21 +1,19 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
 
+$base = __DIR__ . '/../'; 
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinariodao.php";
+include_once $base . "model/dao/veterinarioDao.php";
 
-$vetdao = new veterinariodao();
-
+$vdao = new veterinarioDao();
 
 if (isset($_GET["idveterinario"])) {
-    $resultado = $vetdao->delete($_GET["idveterinario"]);
+    $resultado = $vdao->delete($_GET["idveterinario"]);
     $_SESSION["mensagem"] = "Excluído com sucesso!";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/index.php");
     exit();
 }
 
@@ -28,14 +26,15 @@ if (isset($_POST["btGravar"])) {
     );
 
     if ($_POST["idveterinario"] == "") {
-        $resultado = $vetdao->create($vet);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+        $resultado = $vdao->create($vet);
+        $_SESSION["mensagem"] = "Cadastro realizado com sucesso!";
     } else {
-        $resultado = $vetdao->update($vet);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $resultado = $vdao->update($vet);
+        $_SESSION["mensagem"] = "Alteração realizada com sucesso!";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/index.php"); 
     exit();
 }
+?>
