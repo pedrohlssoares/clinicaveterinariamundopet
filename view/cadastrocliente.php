@@ -10,23 +10,6 @@ include_once $base . "model/dao/clientedao.php";
 include __DIR__ . "/topo.html";
 
 $cdao = new clientedao();
-$consultapdao = new consulta_pagamentodao();
-$consultadao = new consultadao();
-$endao = new enderecodao();
-$fpdao = new forma_pagamentodao();
-$fdao = new funcionariodao();
-$hvdao = new historico_vacinacaodao();
-$pdao = new pagamentodao();
-$petdao = new petdao();
-$prdao = new prescricaodao();
-$pppdao = new prescricaoprescricaopagamentodao();
-$proddao = new produtodao();
-$rdao = new remediodao();
-$sdao = new saladao();
-$vacdao = new vacinadao();
-$vendao = new vendadao();
-$vetdao = new veterinariodao();
-
 
 ?>
 
@@ -53,19 +36,19 @@ $vetdao = new veterinariodao();
 
     <input type="hidden" class="form-control" name="idcliente" value="<?php echo $result["idcliente"] ?>">
     <div class="col-md-4 offset-md-4 p-1">
-        <input type="text" class="form-control" name="nome" placeholder="Digite o nome:" value="<?php echo $result["nome"] ?>">
+        <input type="text" class="form-control" name="nome" placeholder="Digite o nome:" value="<?php echo $result["nome"] ?>" >
     </div>
     <div class="col-md-4 offset-md-4 p-1">
-        <input type="text" class="form-control" name="cpf" placeholder="Digite o CPF:" value="<?php echo $result["cpf"] ?>">
+        <input type="text" class="form-control" name="cpf" placeholder="Digite o CPF:" value="<?php echo $result["cpf"] ?>" required>
     </div>
     <div class="col-md-4 offset-md-4 p-1">
-        <input type="email" class="form-control" name="email" placeholder="Digite o email:" value="<?php echo $result["email"] ?>">
+        <input type="email" class="form-control" name="email" placeholder="Digite o email:" value="<?php echo $result["email"] ?>" >
     </div>
     <div class="col-md-4 offset-md-4 p-1">
-        <input type="tel" class="form-control" name="celular" placeholder="Digite o número de celular:" value="<?php echo $result["celular"] ?>">
+        <input type="tel" class="form-control" name="celular" placeholder="Digite o número de celular:" value="<?php echo $result["celular"] ?>" required>
     </div>
     <div class="col-md-4 offset-md-4 p-1">
-        <input type="submit" value="Gravar" name="btGravar">
+        <input type="submit" value="Salvar" name="btGravar">
     </div>
 </form>
 
