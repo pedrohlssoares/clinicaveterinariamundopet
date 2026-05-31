@@ -26,19 +26,35 @@ public function create(consulta $consulta){
 public function read(){
     try{
         $pdo = conexao::conectar();
-        $sql = "SELECT * FROM consulta ORDER BY data";
+        $sql = "SELECT 
+                    con.idconsulta, 
+                    con.data, 
+                    con.processos_feitos,
+                    p.nome AS nome_pet,
+                    f.nome AS nome_veterinario,
+                    s.numero AS numero_sala
+                FROM consulta con
+                INNER JOIN pet p ON con.petconsultafk = p.idpet
+                INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
+                INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
+                INNER JOIN sala s ON con.salaconsultafk = s.numero
+                ORDER BY con.data";
         $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
             $lista[] = new consulta(
                 $linha["idconsulta"],
-                $linha["petconsultafk"],
-                $linha["veterinarioconsultafk"],
-                $linha["salaconsultafk"],
+                null,
+                null,
+                null,
                 $linha["data"],
-                $linha["processos_feitos"]
+                $linha["processos_feitos"],
+                $linha["nome_pet"],
+                $linha["nome_veterinario"],
+                $linha["numero_sala"]
             );
         }
+        
         conexao::desconectar();
         return $lista;
     }catch(PDOException $exception){
@@ -57,6 +73,43 @@ public function readID($idconsulta){
         return $lista;
     }catch(PDOException $exception){
         return null;
+    }
+}
+
+public function readPorPet($petconsultafk){
+    try{
+        $pdo = conexao::conectar();
+        $sql = "SELECT 
+                    con.idconsulta,
+                    con.data,
+                    con.processos_feitos,
+                    f.nome AS nome_veterinario
+                FROM consulta con
+                INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
+                INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
+                WHERE con.petconsultafk = ?
+                ORDER BY con.data DESC";
+        $query = $pdo->prepare($sql);
+        $query->execute([$petconsultafk]);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $lista = [];
+        foreach($result as $linha){
+            $lista[] = new consulta(
+                $linha["idconsulta"],
+                null,
+                null,
+                null,
+                $linha["data"],
+                $linha["processos_feitos"],
+                null,
+                $linha["nome_veterinario"],
+                null
+            );
+        }       
+        conexao::desconectar();
+        return $lista;
+    }catch(PDOException $exception){
+        return Null;
     }
 }
 

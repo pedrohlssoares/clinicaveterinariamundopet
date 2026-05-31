@@ -23,14 +23,22 @@ public function create(venda $venda){
 public function read(){
     try{
         $pdo = conexao::conectar();
-        $sql = "SELECT * FROM venda ORDER BY idvenda";
+        $sql = "SELECT 
+                    v.idvenda,
+                    p.nome AS nome_produto,
+                    p.preco AS preco_produto
+                FROM venda v
+                INNER JOIN produto p ON v.produtovendafk = p.idproduto
+                ORDER BY v.idvenda DESC";
         $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
             $lista[] = new venda(
                 $linha["idvenda"],
-                $linha["pagamentovendafk"],
-                $linha["produtovendafk"]
+                null,
+                null,
+                $linha["nome_produto"],
+                $linha["preco_produto"]
             );
         }
         conexao::desconectar();

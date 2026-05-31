@@ -21,26 +21,38 @@ class remedioDao {
         }
     }
 
-    public function read() {
-        try {
-            $pdo = conexao::conectar();
-            $sql = "SELECT * FROM remedio ORDER BY ativo";
-            $result = $pdo->query($sql);
-            $lista = [];
-            foreach ($result as $linha) {
-                $lista[] = new remedio(
-                    $linha["idremedio"],    
-                    $linha["produtoremediofk"],
-                    $linha["ativo"],
-                    $linha["lote"]
-                );
-            }
-            conexao::desconectar();
-            return $lista;
-        } catch (PDOException $exception) {
-            return null;
+    public function read(){
+    try{
+        $pdo = conexao::conectar();
+        $sql = "SELECT 
+                    r.idremedio,
+                    p.nome,
+                    r.ativo,
+                    r.lote,
+                    p.preco,
+                    p.quantidade
+                FROM remedio r
+                INNER JOIN produto p ON r.produtoremediofk = p.idproduto
+                ORDER BY p.nome";
+        $result = $pdo->query($sql);
+        $lista = [];
+        foreach($result as $linha){
+            $lista[] = new remedio(
+                $linha["idremedio"],
+                null,
+                $linha["nome"],
+                $linha["ativo"],
+                $linha["lote"],
+                $linha["preco"],
+                $linha["quantidade"]
+            );
         }
+        conexao::desconectar();
+        return $lista;
+    }catch(PDOException $exception){
+        return Null;
     }
+}
 
     public function readID($idremedio) {
         try {
