@@ -144,6 +144,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`historico_vacinacao` (
   `idhistorico` INT NOT NULL AUTO_INCREMENT,
   `pethistorico_vacinacaofk` INT NOT NULL,
   `vacinahistorico_vacinacaofk` INT NOT NULL,
+  `data_aplicacao` DATE NOT NULL,
+  `dosagem` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idhistorico`),
   INDEX `fk_historico_pet1_idx` (`pethistorico_vacinacaofk` ASC),
   INDEX `fk_historico_vacinacao_vacina1_idx` (`vacinahistorico_vacinacaofk` ASC),
@@ -180,9 +182,9 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`consulta` (
   `veterinarioconsultafk` INT NOT NULL,
   `salaconsultafk` INT NOT NULL,
   `data` DATE NOT NULL,
+  `horario` CHAR(5) NOT NULL, 
   `processos_feitos` TEXT(400) NOT NULL,
   PRIMARY KEY (`idconsulta`),
-  INDEX `fk_consulta_pet1_idx` (`petconsultafk` ASC),
   INDEX `fk_consulta_veterinario1_idx` (`veterinarioconsultafk` ASC),
   INDEX `fk_consulta_sala1_idx` (`salaconsultafk` ASC),
   CONSTRAINT `fk_consulta_pet1`
@@ -201,7 +203,6 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`consulta` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `mundopet`.`remedio`
