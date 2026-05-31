@@ -24,7 +24,14 @@ class pagamentoDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM pagamento ORDER BY idpagamento";
+            $sql = "SELECT 
+                        p.idpagamento, 
+                        p.pretacoes, 
+                        p.valor,
+                        f.tipo AS nome_forma_pagamento
+                    FROM pagamento p
+                    INNER JOIN forma_pagamento f ON p.formapagamentofk = f.idforma_pagamento
+                    ORDER BY p.idpagamento";
             $result = $pdo->query($sql);
             $lista = [];
             foreach ($result as $linha) {
@@ -32,7 +39,8 @@ class pagamentoDao {
                     $linha["idpagamento"],    
                     $linha["pretacoes"],
                     $linha["valor"],
-                    $linha["formapagamentofk"]
+                    null,
+                    $linha["nome_forma_pagamento"]
                 );
             }
             conexao::desconectar();
@@ -45,12 +53,27 @@ class pagamentoDao {
     public function readID($idpagamento) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM pagamento WHERE idpagamento = ?";
+            $sql = "SELECT 
+                        p.*,
+                        f.tipo AS nome_forma_pagamento
+                    FROM pagamento p
+                    INNER JOIN forma_pagamento f ON p.formapagamentofk = f.idforma_pagamento
+                    WHERE p.idpagamento = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idpagamento]);
-            $lista = $query->fetch(PDO::FETCH_ASSOC);
+            $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-            return $lista;
+
+            if ($linha) {
+                return new pagamento(
+                    $linha["idpagamento"],    
+                    $linha["pretacoes"],
+                    $linha["valor"],
+                    null,
+                    $linha["nome_forma_pagamento"]
+                );
+            }
+            return null;
         } catch (PDOException $exception) {
             return null;
         }
@@ -60,9 +83,9 @@ class pagamentoDao {
         try {
             $pdo = conexao::conectar();
             $sql = "UPDATE pagamento SET 
-                    pretacoes = ?,
-                    valor = ?,
-                    formapagamentofk = ?
+                        pretacoes = ?,
+                        valor = ?,
+                        formapagamentofk = ?
                     WHERE idpagamento = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
@@ -91,5 +114,4 @@ class pagamentoDao {
         }
     }
 }
-
 ?>

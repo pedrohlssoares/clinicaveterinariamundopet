@@ -23,20 +23,39 @@ class funcionarioDao {
         }
     }
 
+    // Traz todos os funcionários com seus respectivos dados de endereço
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM funcionario ORDER BY nome";
+            $sql = "SELECT 
+                        f.idfuncionario,
+                        f.nome,
+                        f.celular,
+                        f.cpf,
+                        f.salario,
+                        e.rua,
+                        e.cidade,
+                        e.bairro,
+                        e.numero,
+                        e.complemento
+                    FROM funcionario f
+                    INNER JOIN endereco e ON f.enderecofuncionariofk = e.idendereco
+                    ORDER BY f.nome";
             $result = $pdo->query($sql);
             $lista = [];
             foreach ($result as $linha) {
                 $lista[] = new funcionario(
-                    $linha["idfuncionario"],    
+                    $linha["idfuncionario"],
                     $linha["nome"],
                     $linha["celular"],
                     $linha["cpf"],
                     $linha["salario"],
-                    $linha["enderecofuncionariofk"]
+                    null, // Chave estrangeira passada como nula
+                    $linha["rua"],
+                    $linha["cidade"],
+                    $linha["bairro"],
+                    $linha["numero"],
+                    $linha["complemento"]
                 );
             }
             conexao::desconectar();
@@ -46,15 +65,45 @@ class funcionarioDao {
         }
     }
 
+    // Traz um funcionário específico modificado para retornar o objeto
     public function readID($idfuncionario) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM funcionario WHERE idfuncionario = ?";
+            $sql = "SELECT 
+                        f.idfuncionario,
+                        f.nome,
+                        f.celular,
+                        f.cpf,
+                        f.salario,
+                        e.rua,
+                        e.cidade,
+                        e.bairro,
+                        e.numero,
+                        e.complemento
+                    FROM funcionario f
+                    INNER JOIN endereco e ON f.enderecofuncionariofk = e.idendereco
+                    WHERE f.idfuncionario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idfuncionario]);
-            $lista = $query->fetch(PDO::FETCH_ASSOC);
+            $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-            return $lista;
+
+            if ($linha) {
+                return new funcionario(
+                    $linha["idfuncionario"],
+                    $linha["nome"],
+                    $linha["celular"],
+                    $linha["cpf"],
+                    $linha["salario"],
+                    null, // Chave estrangeira passada como nula
+                    $linha["rua"],
+                    $linha["cidade"],
+                    $linha["bairro"],
+                    $linha["numero"],
+                    $linha["complemento"]
+                );
+            }
+            return null;
         } catch (PDOException $exception) {
             return null;
         }
@@ -64,11 +113,11 @@ class funcionarioDao {
         try {
             $pdo = conexao::conectar();
             $sql = "UPDATE funcionario SET 
-                    nome = ?,
-                    celular = ?,
-                    cpf = ?,
-                    salario = ?,
-                    enderecofuncionariofk = ?
+                        nome = ?,
+                        celular = ?,
+                        cpf = ?,
+                        salario = ?,
+                        enderecofuncionariofk = ?
                     WHERE idfuncionario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([

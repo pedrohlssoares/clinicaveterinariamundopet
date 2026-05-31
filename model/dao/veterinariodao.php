@@ -24,15 +24,23 @@ class veterinarioDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM veterinario ORDER BY crmv";
+            $sql = "SELECT 
+                        v.idveterinario, 
+                        v.crmv, 
+                        v.descricao,
+                        f.nome AS nome_veterinario
+                    FROM veterinario v
+                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
+                    ORDER BY v.crmv";
             $result = $pdo->query($sql);
             $lista = [];
             foreach ($result as $linha) {
                 $lista[] = new veterinario(
                     $linha["idveterinario"],    
                     $linha["crmv"],
-                    $linha["funcionarioveterinariofk"],
-                    $linha["descricao"]
+                    null,
+                    $linha["descricao"],
+                    $linha["nome_veterinario"]
                 );
             }
             conexao::desconectar();
@@ -45,12 +53,27 @@ class veterinarioDao {
     public function readID($idveterinario) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM veterinario WHERE idveterinario = ?";
+            $sql = "SELECT 
+                        v.*,
+                        f.nome AS nome_veterinario
+                    FROM veterinario v
+                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
+                    WHERE v.idveterinario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idveterinario]);
-            $lista = $query->fetch(PDO::FETCH_ASSOC);
+            $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-            return $lista;
+
+            if ($linha) {
+                return new veterinario(
+                    $linha["idveterinario"],    
+                    $linha["crmv"],
+                    null,
+                    $linha["descricao"],
+                    $linha["nome_veterinario"]
+                );
+            }
+            return null;
         } catch (PDOException $exception) {
             return null;
         }
@@ -60,9 +83,9 @@ class veterinarioDao {
         try {
             $pdo = conexao::conectar();
             $sql = "UPDATE veterinario SET 
-                    crmv = ?,
-                    funcionarioveterinariofk = ?,
-                    descricao = ?
+                        crmv = ?,
+                        funcionarioveterinariofk = ?,
+                        descricao = ?
                     WHERE idveterinario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
@@ -91,5 +114,4 @@ class veterinarioDao {
         }
     }
 }
-
 ?>

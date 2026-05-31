@@ -25,7 +25,7 @@ public function create(produto $produto){
 public function read(){
     try{
         $pdo = conexao::conectar();
-        $sql = "SELECT * FROM produto ORDER BY tipo";
+        $sql = "SELECT * FROM produto ORDER BY nome";
         $result = $pdo->query($sql);
         $lista = [];
         foreach($result as $linha){
