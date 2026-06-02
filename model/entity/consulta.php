@@ -1,39 +1,27 @@
 <?php
-
 class consulta {
     private $idconsulta;
     private $petconsultafk;
     private $veterinarioconsultafk;
     private $salaconsultafk;
-    private $data;
+    private $pagamentoconsultafk;
+    private $data_consulta;
     private $horario; 
+    private $status;
     private $processos_feitos;
-    
-    private $petcolnome; 
-    private $nome_veterinario;
-    private $numero_sala;
 
-    public function __construct($idconsulta, $petconsultafk, $veterinarioconsultafk, $salaconsultafk, $data, $horario, $processos_feitos, $petcolnome = null, $nome_veterinario = null, $numero_sala = null) {
+    public function __construct($idconsulta, $petconsultafk, $veterinarioconsultafk, $salaconsultafk, $pagamentoconsultafk, $data_consulta, $horario, $status, $processos_feitos) {
         $this->idconsulta = $idconsulta;
         $this->petconsultafk = $petconsultafk;
         $this->veterinarioconsultafk = $veterinarioconsultafk;
         $this->salaconsultafk = $salaconsultafk;
-        $this->data = $data;
+        $this->pagamentoconsultafk = $pagamentoconsultafk;
+        $this->data_consulta = $data_consulta;
         $this->horario = $horario; 
+        $this->status = $status;
         $this->processos_feitos = $processos_feitos;
-        
-        $this->petcolnome = $petcolnome; 
-        $this->nome_veterinario = $nome_veterinario;
-        $this->numero_sala = $numero_sala;
     }
-
-    public function __get($key) {
-        return $this->{$key};
-    }
-
-    public function __set($key, $value) {
-        $this->{$key} = $value;
-    }
+    public function __get($key) { return $this->{$key}; }
+    public function __set($key, $value) { $this->{$key} = $value; }
 }
-
 ?>
