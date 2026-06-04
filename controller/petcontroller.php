@@ -1,44 +1,45 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/pet.php";
 include_once $base . "model/dao/petdao.php";
 
-$pdao = new petdao();
+$pdao = new petDao();
 
-// Se receber requisição de exclusão via GET
 if (isset($_GET["idpet"])) {
     $resultado = $pdao->delete($_GET["idpet"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Excluído com sucesso!" : "Erro ao excluir. Verifique vínculos na base de dados.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    # Agora redireciona sempre para a tabela
+    header("location:../view/gerenciapet.php");
     exit();
 }
 
-// Se receber requisição de salvar (Criar ou Editar) via POST
 if (isset($_POST["btGravar"])) {
+    $clientepetfk = !empty($_POST["clientepetfk"]) ? $_POST["clientepetfk"] : null;
+
     $p = new pet(
         $_POST["idpet"],
-        $_POST["petcolnome"],
+        $_POST["nome"], 
         $_POST["especie"],
         $_POST["raca"],
         $_POST["idade"],
-        $_POST["clientepetfk"] ?? null
+        $clientepetfk
     );
 
-    if ($_POST["idpet"] == "") {
+    if (empty($_POST["idpet"])) {
         $resultado = $pdao->create($p);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Pet cadastrado com sucesso!" : "Erro ao cadastrar pet. Verifique os dados.";
     } else {
         $resultado = $pdao->update($p);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Pet alterado com sucesso!" : "Erro ao alterar pet.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    # Sempre redireciona para a tela de gerência para ver o resultado na tabela
+    header("location:../view/gerenciapet.php");
     exit();
 }
 ?>
