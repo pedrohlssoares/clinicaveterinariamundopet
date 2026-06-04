@@ -1,92 +1,76 @@
 <?php
 session_start();
-
 $base = __DIR__ . '/../';  
-
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/pet.php";
 include_once $base . "model/dao/petdao.php";
-
+include_once $base . "model/entity/cliente.php";
+include_once $base . "model/dao/clientedao.php";
 
 include __DIR__ . "/topo.html";
 
-$petdao = new petdao();
-
+$cdao = new clienteDao();
+$clientes = $cdao->read();
 ?>
 
-<?php
-    if (isset($_SESSION["resultado"])) {
-        if ($_SESSION["resultado"] == true) {
-            echo "<p>{$_SESSION["mensagem"]}</p>";
-        } else {
-            echo "<p>Erro ao efetuar a operação.</p>";
-        }
-        $_SESSION["resultado"] = null;
-        $_SESSION["mensagem"] = null;
-    }
-
-    if (isset($_GET["idpet"])) {
-        $result = $petdao->readId($_GET["idpet"]);
-
-    } else {
-        $result = ["idpet" => "", "petcolnome" => "", "especie" => "", "raca" => "", "idade" => ""];
-    }
-
-?>
-
-<form method="post" action="controller/veterinariocontroller.php">
-
-    <input type="hidden" class="form-control" name="idpet" value="<?php echo $result["idpet"] ?>">
-    <div class="col-md-4 offset-md-4 p-1">
-        <input type="text" class="form-control" name="petcolnome" placeholder="Digite o nome do pet:" value="<?php echo $result["petcolnome"] ?>" required>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-light" style="color: var(--pet-green);">🐾 Novo Pet</h2>
+        <a href="gerenciapet.php" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-list"></i> Ver Pets Cadastrados
+        </a>
     </div>
-    <div class="col-md-4 offset-md-4 p-1">
-        <input type="text" class="form-control" name="especie" placeholder="Digite a espécie:" value="<?php echo $result["especie"] ?>" required>
-    </div>
-    <div class="col-md-4 offset-md-4 p-1">
-        <input type="text" class="form-control" name="raca" placeholder="Digite a raça:" value="<?php echo $result["raca"] ?>"> 
-    </div>
-    <div class="col-md-4 offset-md-4 p-1">
-        <input type="number" class="form-control" name="idade" placeholder="Digite a idade:" value="<?php echo $result["idade"] ?>" required>
-    </div>
-    <div class="col-md-4 offset-md-4 p-1">
-        <input type="submit" value="Salvar" name="btGravar">
-    </div>
-</form>
 
-<table class="table table-hover">
-    <tr>
-        <th>Nome</th>
-        <th>Espécie</th>
-        <th>Raça</th>
-        <th>Idade</th>
-    </tr>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form method="post" action="../controller/petcontroller.php">
+                <!-- ID vazio pois é um novo cadastro -->
+                <input type="hidden" name="idpet" value="">
 
-    <?php
-    $result = $petdao->read();
- 
-    if (is_null($result)) {
-        echo "<tr><td colspan='6'>Erro ao buscar os dados do banco</td></tr>";
-    } else {
+                <div class="row justify-content-center">
+                    <div class="col-md-8 px-4">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Nome do Pet</label>
+                            <input type="text" class="form-control custom-input" name="nome" placeholder="Digite o nome do pet" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Tutor (Cliente) Obrigatório</label>
+                            <select class="form-select custom-input" name="clientepetfk" required>
+                                <option value="">— Selecione o Dono do Pet —</option>
+                                <?php 
+                                if($clientes) {
+                                    foreach ($clientes as $cli) {
+                                        echo "<option value='{$cli->idcliente}'>{$cli->nome} (CPF: {$cli->cpf})</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted small">Espécie</label>
+                                <input type="text" class="form-control custom-input" name="especie" placeholder="Ex: Canina" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted small">Raça</label>
+                                <input type="text" class="form-control custom-input" name="raca" placeholder="Ex: Poodle"> 
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Idade (Anos)</label>
+                            <input type="number" class="form-control custom-input" name="idade" placeholder="Idade" required>
+                        </div>
+                    </div>
+                </div>
 
-        foreach ($result as $item) {
-            echo "<tr>";
-            echo "<td>" . $item->petcolnome . "</td>";
-            echo "<td>" . $item->especie . "</td>";
-            echo "<td>" . $item->raca . "</td>";
-            echo "<td>" . $item->idade . "</td>";
-            echo "<td>";
-            //link para alterar
-            echo "<a href='index.php?idpet={$item->idpet}'><img src='img/alterar.png' width='18'></a>";
-            //link para deletar
-            echo "<a href='controller/petcontroller.php?idpet={$item->idpet}'><img src='img/apagar.png' width='18'></a>";
-            echo "</td>";
-            echo "</tr>";
-        }
-    }
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" name="btGravar">
+                        Cadastrar Pet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    ?>
-</table>
-<?php
-include __DIR__ . "/rodape.html";
-?>
+<?php include __DIR__ . "/rodape.html"; ?>
