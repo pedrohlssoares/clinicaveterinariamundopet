@@ -8,14 +8,14 @@ include_once $base . "model/dao/clientedao.php";
 include_once $base . "model/entity/endereco.php";
 include_once $base . "model/dao/enderecodao.php";
 
-$cdao = new clientedao();
-$edao = new enderecodao();
+$cdao = new clienteDao();
+$edao = new enderecoDao();
 
 if (isset($_GET["idcliente"])) {
     $resultado = $cdao->delete($_GET["idcliente"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Excluído com sucesso!" : "Erro ao excluir. O cliente possui vínculos (Pets/Consultas).";
     $_SESSION["resultado"] = $resultado;
-    header("location:../view/index.php");
+    header("location:../view/gerenciacliente.php");
     exit();
 }
 
@@ -30,14 +30,14 @@ if (isset($_POST["btGravar"])) {
         $_POST["complemento"]
     );
 
-    if ($_POST["idendereco"] == "") {
-
+    if (empty($_POST["idendereco"])) {
+        // NOTA: Para cadastros novos funcionarem perfeitamente, o seu enderecodao.php 
+        // no método create() precisa retornar conexao::conectar()->lastInsertId(); em vez de 'return true;'
         $idEnderecoGerado = $edao->create($end); 
     } else {
         $edao->update($end);
         $idEnderecoGerado = $_POST["idendereco"];
     }
-
 
     $cli = new cliente(
         $_POST["idcliente"],
@@ -48,16 +48,16 @@ if (isset($_POST["btGravar"])) {
         $idEnderecoGerado
     );
 
-    if ($_POST["idcliente"] == "") {
+    if (empty($_POST["idcliente"])) {
         $resultado = $cdao->create($cli);
-        $_SESSION["mensagem"] = "Cadastro realizado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Cliente cadastrado com sucesso!" : "Erro ao cadastrar cliente.";
     } else {
         $resultado = $cdao->update($cli);
-        $_SESSION["mensagem"] = "Alteração realizada com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Cliente atualizado com sucesso!" : "Erro ao atualizar cliente.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    
-    header("location:../view/index.php"); 
+    header("location:../view/gerenciacliente.php"); 
     exit();
 }
+?>
