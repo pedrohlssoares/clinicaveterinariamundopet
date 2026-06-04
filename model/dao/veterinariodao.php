@@ -1,9 +1,7 @@
 <?php
-
 include_once __DIR__ . "/../../config/conexao.php";
 
 class veterinarioDao {
-
     public function create(veterinario $veterinario) {
         try {
             $pdo = conexao::conectar();
@@ -16,7 +14,7 @@ class veterinarioDao {
             ]);
             conexao::desconectar();
             return true;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return false; 
         }
     }
@@ -24,28 +22,20 @@ class veterinarioDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        v.idveterinario, 
-                        v.crmv, 
-                        v.descricao,
-                        f.nome AS nome_veterinario
-                    FROM veterinario v
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    ORDER BY v.crmv";
+            $sql = "SELECT idveterinario, crmv, funcionarioveterinariofk, descricao FROM veterinario";
             $result = $pdo->query($sql);
             $lista = [];
-            foreach ($result as $linha) {
+            foreach($result as $linha) {
                 $lista[] = new veterinario(
-                    $linha["idveterinario"],    
+                    $linha["idveterinario"],
                     $linha["crmv"],
-                    null,
-                    $linha["descricao"],
-                    $linha["nome_veterinario"]
+                    $linha["funcionarioveterinariofk"],
+                    $linha["descricao"]
                 );
             }
             conexao::desconectar();
             return $lista;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -53,12 +43,7 @@ class veterinarioDao {
     public function readID($idveterinario) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        v.*,
-                        f.nome AS nome_veterinario
-                    FROM veterinario v
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    WHERE v.idveterinario = ?";
+            $sql = "SELECT idveterinario, crmv, funcionarioveterinariofk, descricao FROM veterinario WHERE idveterinario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idveterinario]);
             $linha = $query->fetch(PDO::FETCH_ASSOC);
@@ -66,15 +51,12 @@ class veterinarioDao {
 
             if ($linha) {
                 return new veterinario(
-                    $linha["idveterinario"],    
-                    $linha["crmv"],
-                    null,
-                    $linha["descricao"],
-                    $linha["nome_veterinario"]
+                    $linha["idveterinario"], $linha["crmv"], 
+                    $linha["funcionarioveterinariofk"], $linha["descricao"]
                 );
             }
             return null;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -82,17 +64,11 @@ class veterinarioDao {
     public function update(veterinario $veterinario) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE veterinario SET 
-                        crmv = ?,
-                        funcionarioveterinariofk = ?,
-                        descricao = ?
-                    WHERE idveterinario = ?";
+            $sql = "UPDATE veterinario SET crmv = ?, funcionarioveterinariofk = ?, descricao = ? WHERE idveterinario = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
-                $veterinario->crmv, 
-                $veterinario->funcionarioveterinariofk,
-                $veterinario->descricao,
-                $veterinario->idveterinario
+                $veterinario->crmv, $veterinario->funcionarioveterinariofk, 
+                $veterinario->descricao, $veterinario->idveterinario
             ]);
             conexao::desconectar();
             return true;

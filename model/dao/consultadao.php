@@ -1,150 +1,45 @@
 <?php
-
 include_once __DIR__ . "/../../config/conexao.php";
 
 class consultaDao {
-
     public function create(consulta $consulta) {
         try {
             $pdo = conexao::conectar();
-            $sql = "INSERT INTO consulta(petconsultafk, veterinarioconsultafk, salaconsultafk, data, horario, processos_feitos) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO consulta(petconsultafk, veterinarioconsultafk, salaconsultafk, pagamentoconsultafk, data_consulta, horario, status, processos_feitos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $query = $pdo->prepare($sql);
             $query->execute([
                 $consulta->petconsultafk,
                 $consulta->veterinarioconsultafk,
                 $consulta->salaconsultafk,
-                $consulta->data,
-                $consulta->horario, 
+                $consulta->pagamentoconsultafk,
+                $consulta->data_consulta,
+                $consulta->horario,
+                $consulta->status,
                 $consulta->processos_feitos
             ]);
             conexao::desconectar();
             return true;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return false; 
         }
     }
 
-    // Traz TODAS as consultas do banco
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        con.idconsulta, 
-                        con.data, 
-                        con.horario, 
-                        con.processos_feitos,
-                        p.petcolnome AS petcolnome,
-                        f.nome AS nome_veterinario,
-                        s.numero AS numero_sala
-                    FROM consulta con
-                    INNER JOIN pet p ON con.petconsultafk = p.idpet
-                    INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    INNER JOIN sala s ON con.salaconsultafk = s.numero
-                    ORDER BY con.data, con.horario"; 
+            $sql = "SELECT idconsulta, petconsultafk, veterinarioconsultafk, salaconsultafk, pagamentoconsultafk, data_consulta, horario, status, processos_feitos FROM consulta ORDER BY data_consulta DESC";
             $result = $pdo->query($sql);
             $lista = [];
-            foreach ($result as $linha) {
+            foreach($result as $linha) {
                 $lista[] = new consulta(
-                    $linha["idconsulta"],
-                    null,
-                    null,
-                    null,
-                    $linha["data"],
-                    $linha["horario"], 
-                    $linha["processos_feitos"],
-                    $linha["petcolnome"],
-                    $linha["nome_veterinario"],
-                    $linha["numero_sala"]
+                    $linha["idconsulta"], $linha["petconsultafk"], $linha["veterinarioconsultafk"], 
+                    $linha["salaconsultafk"], $linha["pagamentoconsultafk"], $linha["data_consulta"], 
+                    $linha["horario"], $linha["status"], $linha["processos_feitos"]
                 );
             }
             conexao::desconectar();
             return $lista;
-        } catch (PDOException $exception) {
-            return null;
-        }
-    }
-
-    // Traz as consultas de um dia ESPECÍFICO
-    public function readPorData($data) {
-        try {
-            $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        con.idconsulta, 
-                        con.data, 
-                        con.horario, 
-                        con.processos_feitos,
-                        p.petcolnome AS petcolnome,
-                        f.nome AS nome_veterinario,
-                        s.numero AS numero_sala
-                    FROM consulta con
-                    INNER JOIN pet p ON con.petconsultafk = p.idpet
-                    INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    INNER JOIN sala s ON con.salaconsultafk = s.numero
-                    WHERE con.data = ?
-                    ORDER BY con.horario"; 
-            $query = $pdo->prepare($sql);
-            $query->execute([$data]);
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            $lista = [];
-            foreach ($result as $linha) {
-                $lista[] = new consulta(
-                    $linha["idconsulta"],
-                    null,
-                    null,
-                    null,
-                    $linha["data"],
-                    $linha["horario"], 
-                    $linha["processos_feitos"],
-                    $linha["petcolnome"],
-                    $linha["nome_veterinario"],
-                    $linha["numero_sala"]
-                );
-            }       
-            conexao::desconectar();
-            return $lista;
-        } catch (PDOException $exception) {
-            return null;
-        }
-    }
-
-    // Traz o histórico de consultas de um PET específico
-    public function readPorPet($petconsultafk) {
-        try {
-            $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        con.idconsulta,
-                        con.data,
-                        con.horario,
-                        con.processos_feitos,
-                        f.nome AS nome_veterinario
-                    FROM consulta con
-                    INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    WHERE con.petconsultafk = ?
-                    ORDER BY con.data DESC, con.horario DESC";
-            $query = $pdo->prepare($sql);
-            $query->execute([$petconsultafk]);
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            $lista = [];
-            foreach ($result as $linha) {
-                $lista[] = new consulta(
-                    $linha["idconsulta"],
-                    null,
-                    null,
-                    null,
-                    $linha["data"],
-                    $linha["horario"], 
-                    $linha["processos_feitos"],
-                    null,
-                    $linha["nome_veterinario"],
-                    null
-                );
-            }       
-            conexao::desconectar();
-            return $lista;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -152,20 +47,7 @@ class consultaDao {
     public function readID($idconsulta) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT 
-                        con.idconsulta, 
-                        con.data, 
-                        con.horario, 
-                        con.processos_feitos,
-                        p.petcolnome AS petcolnome,
-                        f.nome AS nome_veterinario,
-                        s.numero AS numero_sala
-                    FROM consulta con
-                    INNER JOIN pet p ON con.petconsultafk = p.idpet
-                    INNER JOIN veterinario v ON con.veterinarioconsultafk = v.idveterinario
-                    INNER JOIN funcionario f ON v.funcionarioveterinariofk = f.idfuncionario
-                    INNER JOIN sala s ON con.salaconsultafk = s.numero
-                    WHERE con.idconsulta = ?";
+            $sql = "SELECT idconsulta, petconsultafk, veterinarioconsultafk, salaconsultafk, pagamentoconsultafk, data_consulta, horario, status, processos_feitos FROM consulta WHERE idconsulta = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idconsulta]);
             $linha = $query->fetch(PDO::FETCH_ASSOC);
@@ -173,20 +55,13 @@ class consultaDao {
 
             if ($linha) {
                 return new consulta(
-                    $linha["idconsulta"],
-                    null,
-                    null,
-                    null,
-                    $linha["data"],
-                    $linha["horario"], 
-                    $linha["processos_feitos"],
-                    $linha["petcolnome"],
-                    $linha["nome_veterinario"],
-                    $linha["numero_sala"]
+                    $linha["idconsulta"], $linha["petconsultafk"], $linha["veterinarioconsultafk"], 
+                    $linha["salaconsultafk"], $linha["pagamentoconsultafk"], $linha["data_consulta"], 
+                    $linha["horario"], $linha["status"], $linha["processos_feitos"]
                 );
             }
             return null;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -194,23 +69,12 @@ class consultaDao {
     public function update(consulta $consulta) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE consulta SET 
-                        petconsultafk = ?,
-                        veterinarioconsultafk = ?,
-                        salaconsultafk = ?,
-                        data = ?,
-                        horario = ?, 
-                        processos_feitos = ?
-                    WHERE idconsulta = ?";
+            $sql = "UPDATE consulta SET petconsultafk = ?, veterinarioconsultafk = ?, salaconsultafk = ?, pagamentoconsultafk = ?, data_consulta = ?, horario = ?, status = ?, processos_feitos = ? WHERE idconsulta = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
-                $consulta->petconsultafk, 
-                $consulta->veterinarioconsultafk,
-                $consulta->salaconsultafk,
-                $consulta->data,
-                $consulta->horario, 
-                $consulta->processos_feitos,
-                $consulta->idconsulta
+                $consulta->petconsultafk, $consulta->veterinarioconsultafk, $consulta->salaconsultafk, 
+                $consulta->pagamentoconsultafk, $consulta->data_consulta, $consulta->horario, 
+                $consulta->status, $consulta->processos_feitos, $consulta->idconsulta
             ]);
             conexao::desconectar();
             return true;

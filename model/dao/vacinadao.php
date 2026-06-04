@@ -1,9 +1,7 @@
 <?php
-
 include_once __DIR__ . "/../../config/conexao.php";
 
 class vacinaDao {
-
     public function create(vacina $vacina) {
         try {
             $pdo = conexao::conectar();
@@ -16,7 +14,7 @@ class vacinaDao {
             ]);
             conexao::desconectar();
             return true;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return false; 
         }
     }
@@ -24,20 +22,18 @@ class vacinaDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM vacina ORDER BY ativo";
+            $sql = "SELECT idvacina, produtovacinafk, ativo, lote FROM vacina";
             $result = $pdo->query($sql);
             $lista = [];
-            foreach ($result as $linha) {
+            foreach($result as $linha) {
                 $lista[] = new vacina(
-                    $linha["idvacina"],    
-                    $linha["produtovacinafk"],
-                    $linha["ativo"],
-                    $linha["lote"]
+                    $linha["idvacina"], $linha["produtovacinafk"], 
+                    $linha["ativo"], $linha["lote"]
                 );
             }
             conexao::desconectar();
             return $lista;
-        } catch (PDOException $exception) {
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -45,13 +41,20 @@ class vacinaDao {
     public function readID($idvacina) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT * FROM vacina WHERE idvacina = ?";
+            $sql = "SELECT idvacina, produtovacinafk, ativo, lote FROM vacina WHERE idvacina = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idvacina]);
-            $lista = $query->fetch(PDO::FETCH_ASSOC);
+            $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-            return $lista;
-        } catch (PDOException $exception) {
+
+            if ($linha) {
+                return new vacina(
+                    $linha["idvacina"], $linha["produtovacinafk"], 
+                    $linha["ativo"], $linha["lote"]
+                );
+            }
+            return null;
+        } catch(PDOException $exception) {
             return null;
         }
     }
@@ -59,17 +62,11 @@ class vacinaDao {
     public function update(vacina $vacina) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE vacina SET 
-                    produtovacinafk = ?,
-                    ativo = ?,
-                    lote = ?
-                    WHERE idvacina = ?";
+            $sql = "UPDATE vacina SET produtovacinafk = ?, ativo = ?, lote = ? WHERE idvacina = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
-                $vacina->produtovacinafk, 
-                $vacina->ativo,
-                $vacina->lote,
-                $vacina->idvacina
+                $vacina->produtovacinafk, $vacina->ativo, 
+                $vacina->lote, $vacina->idvacina
             ]);
             conexao::desconectar();
             return true;
@@ -91,5 +88,4 @@ class vacinaDao {
         }
     }
 }
-
 ?>
