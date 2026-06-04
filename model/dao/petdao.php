@@ -19,6 +19,7 @@ class petDao {
             conexao::desconectar();
             return true;
         } catch(PDOException $exception) {
+            error_log("Erro no cadastro: " . $exception->getMessage());
             return false; 
         }
     }
