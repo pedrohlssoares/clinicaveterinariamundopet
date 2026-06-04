@@ -77,3 +77,21 @@ class funcionarioDao {
             conexao::desconectar();
             return true;
         } catch (PDOException $exception) {
+            return false;
+        }
+    }
+
+    public function delete($idfuncionario) {
+        try {
+            $pdo = conexao::conectar();
+            $sql = "DELETE FROM funcionario WHERE idfuncionario = ?";
+            $query = $pdo->prepare($sql);
+            $query->execute([$idfuncionario]);
+            conexao::desconectar();
+            return true;
+        } catch (PDOException $exception) {
+            return false;
+        }
+    }
+}
+?>
