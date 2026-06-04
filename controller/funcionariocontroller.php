@@ -9,8 +9,8 @@ include_once $base . "model/dao/funcionariodao.php";
 include_once $base . "model/entity/endereco.php";
 include_once $base . "model/dao/enderecodao.php";
 
-$fdao = new funcionariodao();
-$edao = new enderecodao();
+$fdao = new funcionarioDao();
+$edao = new enderecoDao();
 
 if (isset($_GET["idfuncionario"])) {
     $resultado = $fdao->delete($_GET["idfuncionario"]);
@@ -31,7 +31,7 @@ if (isset($_POST["btGravar"])) {
         $_POST["complemento"]
     );
 
-    if ($_POST["idendereco"] == "") {
+    if (empty($_POST["idendereco"])) {
         $idEnderecoGerado = $edao->create($end); 
     } else {
         $edao->update($end);
@@ -47,15 +47,13 @@ if (isset($_POST["btGravar"])) {
         $idEnderecoGerado 
     );
 
-    if ($_POST["idfuncionario"] == "") {
+    if (empty($_POST["idfuncionario"])) {
         $resultado = $fdao->create($func);
-        $_SESSION["mensagem"] = "Cadastro realizado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Funcionário cadastrado com sucesso!" : "Erro ao cadastrar funcionário.";
     } else {
         $resultado = $fdao->update($func);
-        $_SESSION["mensagem"] = "Alteração realizada com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Funcionário atualizado com sucesso!" : "Erro ao atualizar funcionário.";
     }
-
-    $_SESSION["resultado"] = $resultado;
     
     header("location:../view/index.php"); 
     exit();
