@@ -46,7 +46,6 @@ if (isset($_SESSION["resultado"])) {
                     echo "<tr><td colspan='6' class='text-center py-4 text-muted'>Nenhum remédio cadastrado no sistema.</td></tr>";
                 } else {
                     foreach ($result as $item) {
-                        // Tolerância a Array ou Objeto da lista de Remédios
                         $fk_produto = is_object($item) ? $item->produtoremediofk : $item["produtoremediofk"];
                         $id_remedio = is_object($item) ? $item->idremedio : $item["idremedio"];
                         $ativo = is_object($item) ? $item->ativo : $item["ativo"];
@@ -54,7 +53,6 @@ if (isset($_SESSION["resultado"])) {
 
                         $produto = $prodao->readId($fk_produto);
                         
-                        // Tolerância a Array ou Objeto ao ler o Produto vinculado
                         $nomeProduto = "Não vinculado";
                         $precoProduto = "—";
                         $qtdProduto = "—";
