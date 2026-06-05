@@ -24,7 +24,6 @@ if (!$rem_obj) {
     exit();
 }
 
-// Suporte para o retorno ser um Array Associativo ou Objeto StdClass do DAO
 $idremedio = is_object($rem_obj) ? $rem_obj->idremedio : $rem_obj["idremedio"];
 $ativo = is_object($rem_obj) ? $rem_obj->ativo : $rem_obj["ativo"];
 $lote = is_object($rem_obj) ? $rem_obj->lote : $rem_obj["lote"];
