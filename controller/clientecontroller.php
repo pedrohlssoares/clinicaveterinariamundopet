@@ -31,8 +31,6 @@ if (isset($_POST["btGravar"])) {
     );
 
     if (empty($_POST["idendereco"])) {
-        // NOTA: Para cadastros novos funcionarem perfeitamente, o seu enderecodao.php 
-        // no método create() precisa retornar conexao::conectar()->lastInsertId(); em vez de 'return true;'
         $idEnderecoGerado = $edao->create($end); 
     } else {
         $edao->update($end);
