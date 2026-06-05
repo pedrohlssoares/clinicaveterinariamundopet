@@ -6,7 +6,6 @@ include_once $base . "config/conexao.php";
 include_once $base . "model/entity/vacina.php";
 include_once $base . "model/dao/vacinadao.php";
 
-// CORREÇÃO CRÍTICA 1: Instanciar o DAO corretamente (estava new vacina() no código original)
 $vdao = new vacinaDao();
 
 if (isset($_GET["idvacina"])) {
@@ -19,7 +18,6 @@ if (isset($_GET["idvacina"])) {
 
 if (isset($_POST["btGravar"])) {
     
-    // CORREÇÃO CRÍTICA 2 e 3: Consistência na variável $v e nomes corretos do form ('ativo' e 'lote')
     $v = new vacina(
         $_POST["idvacina"],
         $_POST["produtovacinafk"] ?? null,
