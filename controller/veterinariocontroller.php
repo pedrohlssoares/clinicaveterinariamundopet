@@ -11,9 +11,9 @@ $vdao = new veterinarioDao();
 
 if (isset($_GET["idveterinario"])) {
     $resultado = $vdao->delete($_GET["idveterinario"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Excluído com sucesso!" : "Erro ao excluir o veterinário. Ele pode estar associado a alguma consulta.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../view/index.php");
+    header("location:../view/gerenciaveterinario.php");
     exit();
 }
 
@@ -25,16 +25,17 @@ if (isset($_POST["btGravar"])) {
         $_POST["descricao"]
     );
 
-    if ($_POST["idveterinario"] == "") {
+    if (empty($_POST["idveterinario"])) {
         $resultado = $vdao->create($vet);
-        $_SESSION["mensagem"] = "Cadastro realizado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Cadastro realizado com sucesso!" : "Erro ao cadastrar veterinário.";
     } else {
         $resultado = $vdao->update($vet);
-        $_SESSION["mensagem"] = "Alteração realizada com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Alteração realizada com sucesso!" : "Erro ao alterar veterinário.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../view/index.php"); 
+    # Atualizado para voltar sempre à tabela de gerência
+    header("location:../view/gerenciaveterinario.php"); 
     exit();
 }
 ?>

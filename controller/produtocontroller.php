@@ -1,8 +1,6 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
-
+$base = __DIR__ . '/../'; // Corrigido de /../../ para /../
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/produto.php";
@@ -10,12 +8,11 @@ include_once $base . "model/dao/produtodao.php";
 
 $prodao = new produtodao();
 
-
 if (isset($_GET["idproduto"])) {
     $resultado = $prodao->delete($_GET["idproduto"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Produto excluído com sucesso!" : "Erro ao excluir o produto. Verifique se ele não está vinculado a uma vacina ou venda.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciaproduto.php");
     exit();
 }
 
@@ -28,15 +25,16 @@ if (isset($_POST["btGravar"])) {
         $_POST["preco"]
     );
 
-    if ($_POST["idproduto"] == "") {
+    if (empty($_POST["idproduto"])) {
         $resultado = $prodao->create($pro);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Produto cadastrado com sucesso!" : "Erro ao cadastrar produto.";
     } else {
         $resultado = $prodao->update($pro);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Produto atualizado com sucesso!" : "Erro ao alterar produto.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciaproduto.php");
     exit();
 }
+?>

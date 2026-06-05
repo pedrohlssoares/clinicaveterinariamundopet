@@ -1,8 +1,6 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
-
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/remedio.php";
@@ -10,12 +8,11 @@ include_once $base . "model/dao/remediodao.php";
 
 $rdao = new remediodao();
 
-
 if (isset($_GET["idremedio"])) {
     $resultado = $rdao->delete($_GET["idremedio"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Excluído com sucesso!" : "Erro ao excluir o remédio. Verifique possíveis vínculos com prescrições médicas.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciaremedio.php");
     exit();
 }
 
@@ -27,15 +24,17 @@ if (isset($_POST["btGravar"])) {
         $_POST["lote"]
     );
 
-    if ($_POST["idremedio"] == "") {
+    if (empty($_POST["idremedio"])) {
         $resultado = $rdao->create($r);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Cadastrado com sucesso!" : "Erro ao cadastrar remédio.";
     } else {
         $resultado = $rdao->update($r);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Alterado com sucesso!" : "Erro ao alterar remédio.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    // Redireciona sempre de volta à tabela de gerência
+    header("location:../view/gerenciaremedio.php");
     exit();
 }
+?>
