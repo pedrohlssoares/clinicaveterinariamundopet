@@ -1,6 +1,6 @@
 <?php
 session_start();
-$base = __DIR__ . '/../'; // Corrigido de /../../ para /../
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
 include_once $base . "model/entity/produto.php";
