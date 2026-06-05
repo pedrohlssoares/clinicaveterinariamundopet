@@ -12,7 +12,6 @@ include __DIR__ . "/topo.html";
 $petdao = new petDao();
 $cdao = new clienteDao();
 
-// Redireciona de volta se tentar aceder sem passar um ID
 if (!isset($_GET["idpet"])) {
     header("location: gerenciapet.php");
     exit();
