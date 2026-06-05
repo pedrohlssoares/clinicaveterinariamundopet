@@ -31,7 +31,6 @@ if (!$cons_obj) {
     exit();
 }
 
-// Suporte para retorno em Objeto ou Array
 $idconsulta = is_object($cons_obj) ? $cons_obj->idconsulta : $cons_obj["idconsulta"];
 $petconsultafk = is_object($cons_obj) ? $cons_obj->petconsultafk : $cons_obj["petconsultafk"];
 $veterinarioconsultafk = is_object($cons_obj) ? $cons_obj->veterinarioconsultafk : $cons_obj["veterinarioconsultafk"];
@@ -120,7 +119,6 @@ $salas = $saladao->read();
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label text-muted small">Data da Consulta</label>
-                                <!-- Se a data vier com hora do banco, pega só a data -->
                                 <input type="date" class="form-control custom-input" name="data" value="<?php echo date('Y-m-d', strtotime($data)) ?>" required>
                             </div>
                             <div class="col-6">
