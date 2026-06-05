@@ -33,7 +33,6 @@ if (isset($_POST["btGravar"])) {
     }
 
     $_SESSION["resultado"] = $resultado;
-    // Redireciona sempre de volta à tabela de gerência
     header("location:../view/gerenciaremedio.php");
     exit();
 }
