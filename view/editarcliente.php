@@ -12,7 +12,6 @@ include __DIR__ . "/topo.html";
 $cdao = new clienteDao();
 $edao = new enderecoDao();
 
-// Redireciona de volta se tentar aceder sem passar um ID
 if (!isset($_GET["idcliente"])) {
     header("location: gerenciacliente.php");
     exit();
@@ -28,7 +27,6 @@ if (!$cli_obj) {
 
 $end_obj = $edao->readId($cli_obj->enderecoclientefk);
 
-// Prevenção caso o endereço não exista
 if (!$end_obj) {
     $end_obj = new stdClass();
     $end_obj->idendereco = "";
