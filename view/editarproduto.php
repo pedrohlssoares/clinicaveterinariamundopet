@@ -9,13 +9,11 @@ include __DIR__ . "/topo.html";
 
 $prodao = new produtodao();
 
-// Impede acesso direto sem ID
 if (!isset($_GET["idproduto"])) {
     header("location: gerenciaproduto.php");
     exit();
 }
 
-// CORREÇÃO: Utilizando notação de Objeto para preencher o formulário
 $pro_obj = $prodao->readId($_GET["idproduto"]);
 
 if (!$pro_obj) {
