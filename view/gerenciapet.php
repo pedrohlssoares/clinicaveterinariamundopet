@@ -57,9 +57,7 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td>" . $item->idade . " anos</td>";
                         echo "<td><span class='badge bg-light text-dark border'>" . $nome_dono . "</span></td>";
                         echo "<td class='text-center'>";
-                        // Redireciona para a nova tela de edição
                         echo "<a href='editarpet.php?idpet={$item->idpet}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";
-                        // Mantém a exclusão no controller
                         echo "<a href='../controller/petcontroller.php?idpet={$item->idpet}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Deseja realmente excluir este pet?')\" title='Excluir'><img src='img/apagar.png' width='16'></a>";
                         echo "</tr>";
                     }
