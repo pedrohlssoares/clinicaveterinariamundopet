@@ -48,28 +48,23 @@ if (isset($_SESSION["resultado"])) {
             </thead>
             <tbody>
                 <?php
-                // Se houver um filtro na sessão (definido no controller), usamos ele, se não lemos todas
                 $lista = isset($_SESSION["consultas_filtradas"]) ? $_SESSION["consultas_filtradas"] : $codao->read();
-                // Limpa o filtro após exibir
                 unset($_SESSION["consultas_filtradas"]);
                 
                 if (is_null($lista) || empty($lista)) {
                     echo "<tr><td colspan='6' class='text-center py-4 text-muted'>Nenhuma consulta agendada.</td></tr>";
                 } else {
                     foreach ($lista as $item) {
-                        // Tolerância a Array ou Objeto da tabela de Consulta
                         $idconsulta = is_object($item) ? $item->idconsulta : $item["idconsulta"];
                         $fk_pet = is_object($item) ? $item->petconsultafk : $item["petconsultafk"];
                         $fk_vet = is_object($item) ? $item->veterinarioconsultafk : $item["veterinarioconsultafk"];
                         $fk_sala = is_object($item) ? $item->salaconsultafk : $item["salaconsultafk"];
                         
-                        // Lida com nome da coluna (data ou data_consulta)
                         $data_bruta = is_object($item) ? (isset($item->data_consulta) ? $item->data_consulta : (isset($item->data) ? $item->data : "")) : ($item["data_consulta"] ?? $item["data"]);
                         $horario = is_object($item) ? $item->horario : $item["horario"];
 
                         $dataFormatada = !empty($data_bruta) ? date("d/m/Y", strtotime($data_bruta)) : "Data Indefinida";
 
-                        // Buscas seguras pelo ID para pegar os nomes reais sem depender de JOIN no DAO
                         $pet_obj = $petdao->readId($fk_pet);
                         $nome_pet = $pet_obj ? (is_object($pet_obj) ? $pet_obj->nome : $pet_obj["nome"]) : "Desconhecido";
 
@@ -87,7 +82,6 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td><span class='badge bg-light text-dark border'>Sala {$num_sala}</span></td>";
                         echo "<td class='text-center'>";
                         echo "<a href='editarconsulta.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";
-                        // SINTAXE DE ASPAS CORRIGIDA
                         echo "<a href='../controller/consultacontroller.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Deseja cancelar/excluir este agendamento?')\" title='Excluir'><img src='img/apagar.png' width='16'></a>";
                         echo "</td>";
                         echo "</tr>";
