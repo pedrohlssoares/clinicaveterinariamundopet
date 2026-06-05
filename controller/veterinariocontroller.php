@@ -34,7 +34,6 @@ if (isset($_POST["btGravar"])) {
     }
 
     $_SESSION["resultado"] = $resultado;
-    # Atualizado para voltar sempre à tabela de gerência
     header("location:../view/gerenciaveterinario.php"); 
     exit();
 }
