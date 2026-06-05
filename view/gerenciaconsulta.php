@@ -30,7 +30,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);">Gerenciar Agenda de Consultas</h2>
         <a href="cadastroconsulta.php" class="btn btn-primary shadow-sm">
-            <i class="bi bi-calendar-plus"></i> + Novo Agendamento
+            <i class="bi bi-calendar-plus"></i> Novo Agendamento
         </a>
     </div>
 
