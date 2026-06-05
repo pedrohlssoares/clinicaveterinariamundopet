@@ -25,7 +25,6 @@ if (!$vac_obj) {
     exit();
 }
 
-// Tolerância a arrays ou objetos
 $idvacina = is_object($vac_obj) ? $vac_obj->idvacina : $vac_obj["idvacina"];
 $ativo = is_object($vac_obj) ? $vac_obj->ativo : $vac_obj["ativo"];
 $lote = is_object($vac_obj) ? $vac_obj->lote : $vac_obj["lote"];
