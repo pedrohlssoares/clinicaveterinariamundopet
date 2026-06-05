@@ -1,16 +1,65 @@
-</div>
-<div class="container-fluid fixed-bottom">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-1 my-1 border-top">
-      <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-          <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-        </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">© 2026 Mundo Pet, Inc</span>
-      </div>
-  
-      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3"><a class="text-body-secondary" href="#"><i class="bi-instagram"></i></a></li>
-        <li class="ms-3"><a class="text-body-secondary" href="#"><i class="bi-envelope"></i></a></li>
-      </ul>
-    </footer>
-  </div>
+</main> <!-- Fecha a tag <main> aberta no topo.html -->
+
+<footer class="text-white py-5 mt-auto" style="background-color: #2c3e50;">
+    <div class="container">
+        <div class="row gy-4 align-items-center">
+            
+            <!-- Coluna 1: Marca e Slogan -->
+            <div class="col-md-4 text-center text-md-start">
+                <a href="index.php" class="text-white text-decoration-none fw-bold fs-5 d-flex align-items-center justify-content-center justify-content-md-start">
+                    <span class="me-2 fs-4">🐾</span> MUNDO PET
+                </a>
+                <p class="text-white-50 small mt-2 mb-0">Cuidando do seu melhor amigo com amor, tecnologia e excelência profissional.</p>
+            </div>
+            
+            <!-- Coluna 2: Informações de Contato -->
+            <div class="col-md-4 text-center border-start border-end border-secondary border-opacity-25 d-none d-md-block">
+                <h6 class="text-uppercase fw-semibold mb-3 text-light" style="letter-spacing: 1px;">Contato & Localização</h6>
+                <ul class="list-unstyled text-white-50 small mb-0 lh-lg">
+                    <li><i class="bi bi-geo-alt-fill me-2 text-success"></i>Muriaé, Minas Gerais - Brasil</li>
+                    <li><i class="bi bi-telephone-fill me-2 text-success"></i>(32) 99999-0000</li>
+                    <li><i class="bi bi-envelope-fill me-2 text-success"></i>contato@mundopet.com.br</li>
+                </ul>
+            </div>
+
+            <!-- Coluna 2 Mobile (Sem bordas) -->
+            <div class="col-12 text-center d-md-none border-bottom border-secondary border-opacity-25 pb-3">
+                <ul class="list-unstyled text-white-50 small mb-0 lh-lg">
+                    <li><i class="bi bi-geo-alt-fill me-2 text-success"></i>Muriaé, MG - Brasil</li>
+                    <li><i class="bi bi-telephone-fill me-2 text-success"></i>(32) 99999-0000</li>
+                </ul>
+            </div>
+            
+            <!-- Coluna 3: Redes Sociais -->
+            <div class="col-md-4 text-center text-md-end">
+                <h6 class="text-uppercase fw-semibold mb-3 text-light" style="letter-spacing: 1px;">Redes Sociais</h6>
+                <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <hr class="border-secondary border-opacity-50 my-4">
+        
+        <!-- Direitos Autorais -->
+        <div class="row">
+            <div class="col-12 text-center text-white-50 small">
+                &copy; 2026 Clínica Veterinária Mundo Pet. Todos os direitos reservados.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Efeito de brilho nas redes sociais ao passar o rato */
+    .transition-hover { transition: color 0.3s ease; }
+    .transition-hover:hover { color: #1abc9c !important; }
+</style>
+
+<!-- Scripts do Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

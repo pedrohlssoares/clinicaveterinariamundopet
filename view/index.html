@@ -2,51 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo Pet - Clínica Veterinária</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Adicionado CDN do Bootstrap Icons para garantir que os ícones funcionam -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/style.css">
-    <title>MUNDOPET - Clínica Veterinária</title>
+    
     <style>
+        /* Estilos gerais da página */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar-nav .nav-link { transition: color 0.3s ease; }
+        .navbar-nav .nav-link:hover { color: #1abc9c !important; }
+        
+        /* Estilos específicos para os botões do Dashboard */
         .dashboard-btn {
             text-align: left;
             padding: 12px 20px;
             font-size: 1.1rem;
             transition: all 0.2s ease-in-out;
         }
-        .dashboard-btn:hover {
-            transform: translateX(5px);
-        }
+        .dashboard-btn:hover { transform: translateX(5px); }
         .dashboard-card {
             border-radius: 15px;
             border: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
+        .transition-hover { transition: color 0.3s ease; }
+        .transition-hover:hover { color: #1abc9c !important; }
     </style>
 </head>
 <body>
 
 <header class="navbar navbar-expand-lg sticky-top shadow-sm" style="background-color: white;">
     <div class="container">
-        <a class="navbar-brand fw-bold text-uppercase d-flex align-items-center" href="index.php">
-            <span class="brand-icon me-2">🐾</span> MUNDO PET
+        <a class="navbar-brand fw-bold text-uppercase d-flex align-items-center" href="index.html" style="color: #2c3e50;">
+            <span class="brand-icon me-2 fs-3">🐾</span> MUNDO PET
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto text-uppercase">
-                <li class="nav-item"><a class="nav-link" href="cadastroconsulta.php">Agendamento</a></li>
-                <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+            <ul class="navbar-nav ms-auto text-uppercase fw-semibold" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                <li class="nav-item">
+                    <a class="nav-link text-secondary px-3" href="index.html"><i class="bi bi-grid-1x2-fill me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary px-3" href="gerenciaconsulta.php"><i class="bi bi-calendar-event me-1"></i> Agenda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-secondary px-3" href="sobre.html"><i class="bi bi-info-circle me-1"></i> Sobre a Clínica</a>
+                </li>
             </ul>
         </div>
     </div>
 </header>
 
-<main class="py-5" style="background-color: #f8f9fa;">
+<main class="flex-grow-1 py-5">
     <div class="container">
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold" style="color: #2c3e50;">Painel Administrativo</h1>
@@ -55,7 +78,6 @@
         
         <div class="row g-4 justify-content-center">
             
-            <!-- COLUNA 1: CADASTROS (CRIAÇÃO) -->
             <div class="col-md-5">
                 <div class="card dashboard-card h-100">
                     <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
@@ -76,7 +98,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA 2: GERÊNCIA (LISTAGEM, EDIÇÃO, EXCLUSÃO) -->
             <div class="col-md-5">
                 <div class="card dashboard-card h-100">
                     <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
@@ -87,13 +108,11 @@
                         <a href="gerenciacliente.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-people me-3"></i>Gerenciar Clientes</a>
                         <a href="gerenciapet.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-list-ul me-3"></i>Gerenciar Pets</a>
                         <a href="gerenciaveterinario.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-file-medical me-3"></i>Gerenciar Veterinários</a>
-                        <!-- O link abaixo prevê que você também fará o desmembramento de funcionários no futuro -->
                         <a href="gerenciafuncionario.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-card-checklist me-3"></i>Gerenciar Funcionários</a>
                         <a href="gerenciasala.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-building me-3"></i>Gerenciar Salas</a>
                         <a href="gerenciaproduto.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-cart-check me-3"></i>Gerenciar Produtos</a>
                         <a href="gerenciaremedio.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-prescription2 me-3"></i>Gerenciar Remédios</a>
                         <a href="gerenciavacina.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-prescription2 me-3"></i>Gerenciar Vacinas</a>
-                        <!-- Substitua o link abaixo se tiver um painel específico de gerenciamento de consultas -->
                         <a href="gerenciaconsulta.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-calendar-week me-3"></i>Painel de Consultas</a>
                     </div>
                 </div>
@@ -102,6 +121,54 @@
         </div>
     </div>
 </main>
+
+<footer class="text-white py-5 mt-auto" style="background-color: #2c3e50;">
+    <div class="container">
+        <div class="row gy-4 align-items-center">
+            
+            <div class="col-md-4 text-center text-md-start">
+                <a href="index.html" class="text-white text-decoration-none fw-bold fs-5 d-flex align-items-center justify-content-center justify-content-md-start">
+                    <span class="me-2 fs-4">🐾</span> MUNDO PET
+                </a>
+                <p class="text-white-50 small mt-2 mb-0">Cuidando do seu melhor amigo com amor, tecnologia e excelência profissional.</p>
+            </div>
+            
+            <div class="col-md-4 text-center border-start border-end border-secondary border-opacity-25 d-none d-md-block">
+                <h6 class="text-uppercase fw-semibold mb-3 text-light" style="letter-spacing: 1px;">Contato & Localização</h6>
+                <ul class="list-unstyled text-white-50 small mb-0 lh-lg">
+                    <li><i class="bi bi-geo-alt-fill me-2 text-success"></i>Muriaé, Minas Gerais - Brasil</li>
+                    <li><i class="bi bi-telephone-fill me-2 text-success"></i>(32) 99999-0000</li>
+                    <li><i class="bi bi-envelope-fill me-2 text-success"></i>contato@mundopet.com.br</li>
+                </ul>
+            </div>
+
+            <div class="col-12 text-center d-md-none border-bottom border-secondary border-opacity-25 pb-3">
+                <ul class="list-unstyled text-white-50 small mb-0 lh-lg">
+                    <li><i class="bi bi-geo-alt-fill me-2 text-success"></i>Muriaé, MG - Brasil</li>
+                    <li><i class="bi bi-telephone-fill me-2 text-success"></i>(32) 99999-0000</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-4 text-center text-md-end">
+                <h6 class="text-uppercase fw-semibold mb-3 text-light" style="letter-spacing: 1px;">Redes Sociais</h6>
+                <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white-50 text-decoration-none fs-4 transition-hover" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <hr class="border-secondary border-opacity-50 my-4">
+        
+        <div class="row">
+            <div class="col-12 text-center text-white-50 small">
+                &copy; 2026 Clínica Veterinária Mundo Pet. Todos os direitos reservados.
+            </div>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
