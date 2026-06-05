@@ -24,7 +24,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);">Gerenciar Clientes</h2>
         <a href="cadastrocliente.php" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-lg"></i> + Novo Cliente
+            <i class="bi bi-plus-lg"></i> Novo Cliente
         </a>
     </div>
 
