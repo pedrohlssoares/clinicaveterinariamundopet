@@ -8,7 +8,6 @@ include_once $base . "model/dao/saladao.php";
 
 $sdao = new salaDao();
 
-// Diferente das outras tabelas, a chave primária de sala se chama "numero" e não "idsala"
 if (isset($_GET["numero"])) {
     $resultado = $sdao->delete($_GET["numero"]);
     $_SESSION["mensagem"] = $resultado ? "Sala excluída com sucesso!" : "Erro ao excluir a sala. Pode existir alguma consulta agendada para ela.";
