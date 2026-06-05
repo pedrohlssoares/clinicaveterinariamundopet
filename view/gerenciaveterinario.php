@@ -46,7 +46,6 @@ if (isset($_SESSION["resultado"])) {
                     echo "<tr><td colspan='4' class='text-center py-4 text-muted'>Nenhum veterinário cadastrado no sistema.</td></tr>";
                 } else {
                     foreach ($result as $item) {
-                        // CORREÇÃO: Utilização de objeto ($func->nome) em vez de array ($func["nome"])
                         $func = $fundao->readId($item->funcionarioveterinariofk);
                         $nomeFuncionario = $func ? $func->nome : "Não vinculado / Excluído";
 
@@ -56,7 +55,6 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td>{$item->descricao}</td>";
                         echo "<td class='text-center'>";
                         echo "<a href='editarveterinario.php?idveterinario={$item->idveterinario}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";
-                        // ASPAS CORRIGIDAS PARA O BOTÃO DE EXCLUIR
                         echo "<a href='../controller/veterinariocontroller.php?idveterinario={$item->idveterinario}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Deseja realmente excluir este veterinário?')\" title='Excluir'><img src='img/apagar.png' width='16'></a>";
                         echo "</td>";
                         echo "</tr>";
