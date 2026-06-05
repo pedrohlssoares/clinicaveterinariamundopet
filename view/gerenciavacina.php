@@ -24,7 +24,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);">Gerenciar Vacinas</h2>
         <a href="cadastrovacina.php" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-lg"></i> + Nova Vacina
+            <i class="bi bi-plus-lg"></i>Nova Vacina
         </a>
     </div>
 
