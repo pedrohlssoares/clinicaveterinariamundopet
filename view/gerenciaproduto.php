@@ -44,7 +44,6 @@ if (isset($_SESSION["resultado"])) {
                     echo "<tr><td colspan='5' class='text-center py-4 text-muted'>Nenhum produto cadastrado no sistema.</td></tr>";
                 } else {
                     foreach ($result as $item) {
-                        // Verifica se estoque está baixo para dar um destaque visual
                         $badge_estoque = ($item->quantidade <= 5) ? "bg-danger" : "bg-light text-dark border";
 
                         echo "<tr>";
