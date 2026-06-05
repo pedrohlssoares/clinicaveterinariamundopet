@@ -9,15 +9,30 @@ include_once $base . "model/dao/funcionariodao.php";
 
 include __DIR__ . "/topo.html";
 
+$vetdao = new veterinariodao();
 $fundao = new funcionariodao();
+
+if (!isset($_GET["idveterinario"])) {
+    header("location: gerenciaveterinario.php");
+    exit();
+}
+
+$vet_obj = $vetdao->readId($_GET["idveterinario"]);
+
+if (!$vet_obj) {
+    echo "<div class='container mt-5'><div class='alert alert-danger'>Veterinário não encontrado!</div></div>";
+    include __DIR__ . "/rodape.html";
+    exit();
+}
+
 $funcionarios = $fundao->read();
 ?>
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-light" style="color: var(--pet-green);">🩺 Novo Veterinário</h2>
+        <h2 class="fw-light text-primary">✏️ Editar Veterinário</h2>
         <a href="gerenciaveterinario.php" class="btn btn-outline-secondary shadow-sm">
-            <i class="bi bi-list"></i> Ver Veterinários Cadastrados
+            Cancelar / Voltar
         </a>
     </div>
 
@@ -25,13 +40,13 @@ $funcionarios = $fundao->read();
         <div class="card-body p-4">
             <form method="post" action="../controller/veterinariocontroller.php">
                 
-                <input type="hidden" name="idveterinario" value="">
+                <input type="hidden" name="idveterinario" value="<?php echo $vet_obj->idveterinario ?>">
 
                 <div class="row justify-content-center">
                     <div class="col-md-8 px-4">
                         <div class="mb-3">
                             <label class="form-label text-muted small">CRMV</label>
-                            <input type="text" class="form-control custom-input" name="crmv" placeholder="Digite o CRMV" required>
+                            <input type="text" class="form-control custom-input" name="crmv" value="<?php echo $vet_obj->crmv ?>" required>
                         </div>
 
                         <div class="mb-3">
@@ -41,7 +56,8 @@ $funcionarios = $fundao->read();
                                 <?php 
                                 if($funcionarios) {
                                     foreach ($funcionarios as $func) {
-                                        echo "<option value='{$func->idfuncionario}'>{$func->nome} (CPF: {$func->cpf})</option>";
+                                        $selected = ($vet_obj->funcionarioveterinariofk == $func->idfuncionario) ? "selected" : "";
+                                        echo "<option value='{$func->idfuncionario}' {$selected}>{$func->nome} (CPF: {$func->cpf})</option>";
                                     }
                                 }
                                 ?>
@@ -50,14 +66,14 @@ $funcionarios = $fundao->read();
 
                         <div class="mb-3">
                             <label class="form-label text-muted small">Descrição / Especialidade</label>
-                            <textarea class="form-control custom-input" name="descricao" rows="3" placeholder="Ex: Especialista em Felinos"></textarea>
+                            <textarea class="form-control custom-input" name="descricao" rows="3"><?php echo $vet_obj->descricao ?></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" name="btGravar">
-                        Cadastrar Veterinário
+                        Atualizar Veterinário
                     </button>
                 </div>
             </form>

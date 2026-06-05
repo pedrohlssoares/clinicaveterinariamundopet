@@ -1,16 +1,34 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Adicionado CDN do Bootstrap Icons para garantir que os ícones funcionam -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../static/style.css">
     <title>MUNDOPET - Clínica Veterinária</title>
+    <style>
+        .dashboard-btn {
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .dashboard-btn:hover {
+            transform: translateX(5px);
+        }
+        .dashboard-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
 <body>
 
-<header class="navbar navbar-expand-lg sticky-top shadow-sm">
+<header class="navbar navbar-expand-lg sticky-top shadow-sm" style="background-color: white;">
     <div class="container">
         <a class="navbar-brand fw-bold text-uppercase d-flex align-items-center" href="index.php">
             <span class="brand-icon me-2">🐾</span> MUNDO PET
@@ -20,41 +38,67 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto text-uppercase">
-                <li class="nav-item"><a class="nav-link" href="indexconsulta.php">Agendamento</a></li>
+                <li class="nav-item"><a class="nav-link" href="cadastroconsulta.php">Agendamento</a></li>
                 <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre</a></li>
-                <li class="nav-item"><a class="nav-link" href="contato.html">Contato</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
             </ul>
         </div>
     </div>
 </header>
 
-<main class="container py-5">
-    <div class="row text-center justify-content-center">
-        <div class="col-md-8">
-            <h2 class="mb-4 fw-light">Bem-vindo ao Painel Administrativo</h2>
-            <div class="d-flex flex-wrap justify-content-center gap-3">
-                <a href="cadastrocliente.php" class="btn btn-primary btn-lg px-4 shadow">
-                    <i class="bi bi-person-plus"></i> Cadastrar cliente
-                </a>
-                <a href="cadastrofuncionario.php" class="btn btn-outline-success btn-lg px-4 shadow">
-                    <i class="bi bi-person-badge"></i> Cadastrar funcionário
-                </a>
-                <a href="cadastropet.php" class="btn btn-outline-success btn-lg px-4 shadow">
-                    <i class="bi bi-person-badge"></i> Cadastrar pet
-                </a>
-                <a href="cadastroveterinario.php" class="btn btn-outline-success btn-lg px-4 shadow">
-                    <i class="bi bi-person-badge"></i> Cadastrar veterinario
-                </a>
-                <a href="indexconsulta.php" class="btn btn-outline-success btn-lg px-4 shadow">
-                    <i class="bi bi-person-badge"></i> Cadastrar consulta
-                </a>
-                <a href="cadastroproduto.php" class="btn btn-primary btn-lg px-4 shadow">
-                    <i class="bi bi-person-plus"></i> Cadastrar produto
-                </a>
-                <a href="cadastroremedio.php" class="btn btn-primary btn-lg px-4 shadow">
-                    <i class="bi bi-person-plus"></i> Cadastrar remédio
-                </a>
+<main class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold" style="color: #2c3e50;">Painel Administrativo</h1>
+            <p class="lead text-muted">Selecione uma das opções abaixo para gerir os dados da clínica.</p>
+        </div>
+        
+        <div class="row g-4 justify-content-center">
+            
+            <!-- COLUNA 1: CADASTROS (CRIAÇÃO) -->
+            <div class="col-md-5">
+                <div class="card dashboard-card h-100">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
+                        <h3 class="h4 text-success"><i class="bi bi-plus-circle-fill me-2"></i>Novos Cadastros</h3>
+                        <p class="text-muted small">Registar novas informações no sistema</p>
+                    </div>
+                    <div class="card-body d-grid gap-3 p-4">
+                        <a href="cadastrocliente.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-person-plus me-3"></i>Cadastrar Cliente</a>
+                        <a href="cadastropet.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-suit-heart me-3"></i>Cadastrar Pet</a>
+                        <a href="cadastroveterinario.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-heart-pulse me-3"></i>Cadastrar Veterinário</a>
+                        <a href="cadastrofuncionario.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-person-badge me-3"></i>Cadastrar Funcionário</a>
+                        <a href="cadastrosala.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-door-open me-3"></i>Cadastrar Sala</a>
+                        <a href="cadastroproduto.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-box-seam me-3"></i>Cadastrar Produto</a>
+                        <a href="cadastroremedio.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-capsule me-3"></i>Cadastrar Remédio</a>
+                        <a href="cadastrovacina.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-calendar-plus me-3"></i>Cadastrar Vacina</a>
+                        <a href="cadastroconsulta.php" class="btn btn-outline-success dashboard-btn"><i class="bi bi-calendar-plus me-3"></i>Agendar Consulta</a>
+                    </div>
+                </div>
             </div>
+
+            <!-- COLUNA 2: GERÊNCIA (LISTAGEM, EDIÇÃO, EXCLUSÃO) -->
+            <div class="col-md-5">
+                <div class="card dashboard-card h-100">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
+                        <h3 class="h4 text-primary"><i class="bi bi-list-check me-2"></i>Gerência e Consultas</h3>
+                        <p class="text-muted small">Listar, editar e excluir registos</p>
+                    </div>
+                    <div class="card-body d-grid gap-3 p-4">
+                        <a href="gerenciacliente.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-people me-3"></i>Gerenciar Clientes</a>
+                        <a href="gerenciapet.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-list-ul me-3"></i>Gerenciar Pets</a>
+                        <a href="gerenciaveterinario.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-file-medical me-3"></i>Gerenciar Veterinários</a>
+                        <!-- O link abaixo prevê que você também fará o desmembramento de funcionários no futuro -->
+                        <a href="gerenciafuncionario.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-card-checklist me-3"></i>Gerenciar Funcionários</a>
+                        <a href="gerenciasala.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-building me-3"></i>Gerenciar Salas</a>
+                        <a href="gerenciaproduto.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-cart-check me-3"></i>Gerenciar Produtos</a>
+                        <a href="gerenciaremedio.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-prescription2 me-3"></i>Gerenciar Remédios</a>
+                        <a href="gerenciavacina.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-prescription2 me-3"></i>Gerenciar Vacinas</a>
+                        <!-- Substitua o link abaixo se tiver um painel específico de gerenciamento de consultas -->
+                        <a href="gerenciaconsulta.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-calendar-week me-3"></i>Painel de Consultas</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
