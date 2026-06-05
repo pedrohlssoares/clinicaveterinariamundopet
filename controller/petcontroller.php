@@ -12,7 +12,6 @@ if (isset($_GET["idpet"])) {
     $resultado = $pdao->delete($_GET["idpet"]);
     $_SESSION["mensagem"] = $resultado ? "Excluído com sucesso!" : "Erro ao excluir. Verifique vínculos na base de dados.";
     $_SESSION["resultado"] = $resultado;
-    # Agora redireciona sempre para a tabela
     header("location:../view/gerenciapet.php");
     exit();
 }
@@ -38,7 +37,6 @@ if (isset($_POST["btGravar"])) {
     }
 
     $_SESSION["resultado"] = $resultado;
-    # Sempre redireciona para a tela de gerência para ver o resultado na tabela
     header("location:../view/gerenciapet.php");
     exit();
 }
