@@ -9,7 +9,6 @@ include __DIR__ . "/topo.html";
 
 $sdao = new salaDao();
 
-// Redireciona de volta se tentar aceder sem passar um número
 if (!isset($_GET["numero"])) {
     header("location: gerenciasala.php");
     exit();
