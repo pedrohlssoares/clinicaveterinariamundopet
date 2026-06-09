@@ -5,12 +5,12 @@ class prescricaoDao {
     public function create(prescricao $prescricao) {
         try {
             $pdo = conexao::conectar();
-            $sql = "INSERT INTO prescricao(consultaprescricaofk, remedioprescricaofk, pagamentoprescricaofk, dosagem) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO prescricao(consultaprescricaofk, remedioprescricaofk, vacinaprescricaofk, dosagem) VALUES (?, ?, ?, ?)";
             $query = $pdo->prepare($sql);
             $query->execute([
                 $prescricao->consultaprescricaofk,
                 $prescricao->remedioprescricaofk,
-                $prescricao->pagamentoprescricaofk,
+                $prescricao->vacinaprescricaofk,
                 $prescricao->dosagem
             ]);
             conexao::desconectar();
@@ -23,13 +23,13 @@ class prescricaoDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idprescricao, consultaprescricaofk, remedioprescricaofk, pagamentoprescricaofk, dosagem FROM prescricao";
+            $sql = "SELECT idprescricao, consultaprescricaofk, remedioprescricaofk, vacinaprescricaofk, dosagem FROM prescricao";
             $result = $pdo->query($sql);
             $lista = [];
             foreach($result as $linha) {
                 $lista[] = new prescricao(
                     $linha["idprescricao"], $linha["consultaprescricaofk"], 
-                    $linha["remedioprescricaofk"], $linha["pagamentoprescricaofk"], $linha["dosagem"]
+                    $linha["remedioprescricaofk"], $linha["vacinaprescricaofk"], $linha["dosagem"]
                 );
             }
             conexao::desconectar();
@@ -42,16 +42,15 @@ class prescricaoDao {
     public function readID($idprescricao) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idprescricao, consultaprescricaofk, remedioprescricaofk, pagamentoprescricaofk, dosagem FROM prescricao WHERE idprescricao = ?";
+            $sql = "SELECT idprescricao, consultaprescricaofk, remedioprescricaofk, vacinaprescricaofk, dosagem FROM prescricao WHERE idprescricao = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idprescricao]);
             $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-
             if ($linha) {
                 return new prescricao(
                     $linha["idprescricao"], $linha["consultaprescricaofk"], 
-                    $linha["remedioprescricaofk"], $linha["pagamentoprescricaofk"], $linha["dosagem"]
+                    $linha["remedioprescricaofk"], $linha["vacinaprescricaofk"], $linha["dosagem"]
                 );
             }
             return null;
@@ -63,11 +62,11 @@ class prescricaoDao {
     public function update(prescricao $prescricao) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE prescricao SET consultaprescricaofk = ?, remedioprescricaofk = ?, pagamentoprescricaofk = ?, dosagem = ? WHERE idprescricao = ?";
+            $sql = "UPDATE prescricao SET consultaprescricaofk = ?, remedioprescricaofk = ?, vacinaprescricaofk = ?, dosagem = ? WHERE idprescricao = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
                 $prescricao->consultaprescricaofk, $prescricao->remedioprescricaofk, 
-                $prescricao->pagamentoprescricaofk, $prescricao->dosagem, $prescricao->idprescricao
+                $prescricao->vacinaprescricaofk, $prescricao->dosagem, $prescricao->idprescricao
             ]);
             conexao::desconectar();
             return true;

@@ -5,14 +5,16 @@ class pagamentoDao {
     public function create(pagamento $pagamento) {
         try {
             $pdo = conexao::conectar();
-            $sql = "INSERT INTO pagamento(prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO pagamento(prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk, consultapagamentofk, prescricaopagamentofk) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $query = $pdo->prepare($sql);
             $query->execute([
                 $pagamento->prestacoes,
                 $pagamento->valor,
                 $pagamento->data_pagamento,
                 $pagamento->formapagamentofk,
-                $pagamento->clientepagamentofk
+                $pagamento->clientepagamentofk,
+                $pagamento->consultapagamentofk,
+                $pagamento->prescricaopagamentofk
             ]);
             conexao::desconectar();
             return true;
@@ -24,13 +26,14 @@ class pagamentoDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idpagamento, prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk FROM pagamento ORDER BY data_pagamento DESC";
+            $sql = "SELECT idpagamento, prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk, consultapagamentofk, prescricaopagamentofk FROM pagamento ORDER BY data_pagamento DESC";
             $result = $pdo->query($sql);
             $lista = [];
             foreach($result as $linha) {
                 $lista[] = new pagamento(
                     $linha["idpagamento"], $linha["prestacoes"], $linha["valor"], 
-                    $linha["data_pagamento"], $linha["formapagamentofk"], $linha["clientepagamentofk"]
+                    $linha["data_pagamento"], $linha["formapagamentofk"], $linha["clientepagamentofk"],
+                    $linha["consultapagamentofk"], $linha["prescricaopagamentofk"]
                 );
             }
             conexao::desconectar();
@@ -43,16 +46,16 @@ class pagamentoDao {
     public function readID($idpagamento) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idpagamento, prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk FROM pagamento WHERE idpagamento = ?";
+            $sql = "SELECT idpagamento, prestacoes, valor, data_pagamento, formapagamentofk, clientepagamentofk, consultapagamentofk, prescricaopagamentofk FROM pagamento WHERE idpagamento = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idpagamento]);
             $linha = $query->fetch(PDO::FETCH_ASSOC);
             conexao::desconectar();
-
             if ($linha) {
                 return new pagamento(
                     $linha["idpagamento"], $linha["prestacoes"], $linha["valor"], 
-                    $linha["data_pagamento"], $linha["formapagamentofk"], $linha["clientepagamentofk"]
+                    $linha["data_pagamento"], $linha["formapagamentofk"], $linha["clientepagamentofk"],
+                    $linha["consultapagamentofk"], $linha["prescricaopagamentofk"]
                 );
             }
             return null;
@@ -64,11 +67,12 @@ class pagamentoDao {
     public function update(pagamento $pagamento) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE pagamento SET prestacoes = ?, valor = ?, data_pagamento = ?, formapagamentofk = ?, clientepagamentofk = ? WHERE idpagamento = ?";
+            $sql = "UPDATE pagamento SET prestacoes = ?, valor = ?, data_pagamento = ?, formapagamentofk = ?, clientepagamentofk = ?, consultapagamentofk = ?, prescricaopagamentofk = ? WHERE idpagamento = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
                 $pagamento->prestacoes, $pagamento->valor, $pagamento->data_pagamento, 
-                $pagamento->formapagamentofk, $pagamento->clientepagamentofk, $pagamento->idpagamento
+                $pagamento->formapagamentofk, $pagamento->clientepagamentofk,
+                $pagamento->consultapagamentofk, $pagamento->prescricaopagamentofk, $pagamento->idpagamento
             ]);
             conexao::desconectar();
             return true;
