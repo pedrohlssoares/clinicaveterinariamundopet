@@ -37,6 +37,16 @@
         }
         .transition-hover { transition: color 0.3s ease; }
         .transition-hover:hover { color: #1abc9c !important; }
+        
+        .destaque-btn {
+            background-color: #e8f4fd;
+            border-left: 4px solid #0d6efd;
+            font-weight: 500;
+        }
+        .destaque-btn:hover {
+            background-color: #d1e7dd;
+            border-left: 4px solid #198754;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +119,8 @@
                         <p class="text-muted small">Listar, editar e excluir registos</p>
                     </div>
                     <div class="card-body d-grid gap-3 p-4">
+                        <a href="consultar_historico.php" class="btn btn-outline-primary dashboard-btn destaque-btn shadow-sm mb-2"><i class="bi bi-folder2-open text-primary me-3"></i>Prontuário & Histórico Geral</a>
+                        
                         <a href="gerenciacliente.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-people me-3"></i>Gerenciar Clientes</a>
                         <a href="gerenciapet.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-list-ul me-3"></i>Gerenciar Pets</a>
                         <a href="gerenciaveterinario.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-file-medical me-3"></i>Gerenciar Veterinários</a>
@@ -124,6 +136,7 @@
                         <a href="gerenciapagamento.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-cash-stack me-3"></i>Fluxo de Caixa (Pagamentos)</a>
                         <a href="gerenciavenda.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-bag-check me-3"></i>Gerenciar Vendas</a>
                         <a href="gerenciadespesa.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-wallet2 me-3"></i>Gerenciar Despesas</a>
+                        <a href="gerenciaestatistica.php" class="btn btn-outline-primary dashboard-btn"><i class="bi bi-bar-chart-line-fill me-3"></i>Analytics & Financeiro</a>
                     </div>
                 </div>
             </div>
