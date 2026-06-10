@@ -5,8 +5,8 @@ $base = __DIR__ . '/../../';
 
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/endereco.php";
-include_once $base . "model/dao/enderecodao.php";
+include_once $base . "entity/model/endereco.php";
+include_once $base . "entity/dao/enderecodao.php";
 
 $endao = new enderecodao();
 

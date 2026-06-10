@@ -1,40 +1,40 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
-
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/historico_vacinacao.php";
-include_once $base . "model/dao/historico_vacinacaodao.php";
+include_once $base . "entity/model/historico_vacinacao.php";
+include_once $base . "entity/dao/historico_vacinacaodao.php";
 
-$hdao = new historico_vacinacaodao();
-
+$hvdao = new historico_vacinacaoDao();
 
 if (isset($_GET["idhistorico"])) {
-    $resultado = $hdao->delete($_GET["idhistorico"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $resultado = $hvdao->delete($_GET["idhistorico"]);
+    $_SESSION["mensagem"] = $resultado ? "Registro de vacinação excluído com sucesso!" : "Erro ao excluir o registro de vacinação.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciahistorico_vacinacao.php");
     exit();
 }
 
 if (isset($_POST["btGravar"])) {
-    $h = new historico_vacinacao(
+    $hv = new historico_vacinacao(
         $_POST["idhistorico"],
-        $_POST["vacinahistorico_vacinacaofk"] ?? null,
-        $_POST["pethistoricofk"] ?? null
+        $_POST["pethistorico_vacinacaofk"],
+        $_POST["vacinahistorico_vacinacaofk"],
+        $_POST["data_aplicacao"],
+        $_POST["dosagem"]
     );
 
-    if ($_POST["idhistorico"] == "") {
-        $resultado = $hdao->create($h);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+    if (empty($_POST["idhistorico"])) {
+        $resultado = $hvdao->create($hv);
+        $_SESSION["mensagem"] = $resultado ? "Vacinação registrada com sucesso!" : "Erro ao registrar vacinação.";
     } else {
-        $resultado = $hdao->update($h);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $resultado = $hvdao->update($hv);
+        $_SESSION["mensagem"] = $resultado ? "Registro de vacinação atualizado com sucesso!" : "Erro ao atualizar registro de vacinação.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciahistorico_vacinacao.php");
     exit();
 }
+?>

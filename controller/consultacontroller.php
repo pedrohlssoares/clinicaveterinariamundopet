@@ -3,8 +3,8 @@ session_start();
 $base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/consulta.php";
-include_once $base . "model/dao/consultadao.php";
+include_once $base . "entity/model/consulta.php";
+include_once $base . "entity/dao/consultadao.php";
 
 $codao = new consultadao();
 
@@ -25,15 +25,16 @@ if (isset($_GET["idconsulta"])) {
 
 if (isset($_POST["btGravar"])) {
     
+    $status_consulta = isset($_POST["status"]) && !empty($_POST["status"]) ? $_POST["status"] : 'Agendada';
+    
     $co = new consulta(
         $_POST["idconsulta"],
         $_POST["petconsultafk"],
         $_POST["veterinarioconsultafk"] ?? null,
         $_POST["salaconsultafk"] ?? null,
-        null,
-        $_POST["data"],
+        $_POST["data_consulta"],
         $_POST["horario"], 
-        'Agendada',
+        $status_consulta,
         $_POST["processos_feitos"] ?? null
     );
 

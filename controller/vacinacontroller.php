@@ -3,8 +3,8 @@ session_start();
 $base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/vacina.php";
-include_once $base . "model/dao/vacinadao.php";
+include_once $base . "entity/model/vacina.php";
+include_once $base . "entity/dao/vacinadao.php";
 
 $vdao = new vacinaDao();
 

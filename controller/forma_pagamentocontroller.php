@@ -1,24 +1,23 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
-
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/forma_pagamento.php";
-include_once $base . "model/dao/forma_pagamentodao.php";
+include_once $base . "entity/model/forma_pagamento.php";
+include_once $base . "entity/dao/forma_pagamentodao.php";
 
-$fpdao = new forma_pagamentodao();
+$fpdao = new forma_pagamentoDao();
 
-
+// Rota de Exclusão
 if (isset($_GET["idforma_pagamento"])) {
     $resultado = $fpdao->delete($_GET["idforma_pagamento"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $_SESSION["mensagem"] = $resultado ? "Forma de pagamento excluída com sucesso!" : "Erro ao excluir a forma de pagamento.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciaforma_pagamento.php");
     exit();
 }
 
+// Rota de Inserção / Atualização
 if (isset($_POST["btGravar"])) {
     $fp = new forma_pagamento(
         $_POST["idforma_pagamento"],
@@ -26,15 +25,16 @@ if (isset($_POST["btGravar"])) {
         $_POST["descricao"]
     );
 
-    if ($_POST["idforma_pagamento"] == "") {
+    if (empty($_POST["idforma_pagamento"])) {
         $resultado = $fpdao->create($fp);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Forma de pagamento cadastrada com sucesso!" : "Erro ao cadastrar forma de pagamento.";
     } else {
         $resultado = $fpdao->update($fp);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $_SESSION["mensagem"] = $resultado ? "Forma de pagamento atualizada com sucesso!" : "Erro ao atualizar forma de pagamento.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciaforma_pagamento.php");
     exit();
 }
+?>

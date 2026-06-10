@@ -5,8 +5,8 @@ $base = __DIR__ . '/../../';
 
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/consulta_pagamento.php";
-include_once $base . "model/dao/consulta_pagamentodao.php";
+include_once $base . "entity/model/consulta_pagamento.php";
+include_once $base . "entity/dao/consulta_pagamentodao.php";
 
 $conpdao = new consulta_pagamentodao();
 

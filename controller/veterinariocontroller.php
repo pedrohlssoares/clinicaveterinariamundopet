@@ -4,8 +4,8 @@ session_start();
 $base = __DIR__ . '/../'; 
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinarioDao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinarioDao.php";
 
 $vdao = new veterinarioDao();
 

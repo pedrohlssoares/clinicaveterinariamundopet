@@ -1,40 +1,44 @@
 <?php
-
 session_start();
-$base = __DIR__ . '/../../';
-
+$base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/venda.php";
-include_once $base . "model/dao/vendadao.php";
 
-$vedao = new venda();
+include_once $base ."entity/model/venda.php";
+include_once $base ."entity/dao/vendadao.php";
 
+$vdao = new vendaDao();
 
 if (isset($_GET["idvenda"])) {
-    $resultado = $vedao->delete($_GET["idvenda"]);
-    $_SESSION["mensagem"] = "Excluído com sucesso!";
+    $resultado = $vdao->delete($_GET["idvenda"]);
+    $_SESSION["mensagem"] = $resultado ? "Item de venda excluído com sucesso!" : "Erro ao excluir o item de venda.";
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciavenda.php");
     exit();
 }
 
 if (isset($_POST["btGravar"])) {
-    $ve = new venda(
+    $valor_unitario = str_replace(',', '.', $_POST["valor_unitario"]);
+    $valor_unitario = floatval($valor_unitario);
+
+    $vd = new venda(
         $_POST["idvenda"],
-        $_POST["pagamentovendafk"] ?? null,
-        $_POST["produtovendafk"] ?? null
+        $_POST["pagamentovendafk"],
+        $_POST["produtovendafk"],
+        intval($_POST["quantidade"]),
+        $valor_unitario
     );
 
-    if ($_POST["idvenda"] == "") {
-        $resultado = $vedao->create($ve);
-        $_SESSION["mensagem"] = "Cadastrado com sucesso!";
+    if (empty($_POST["idvenda"])) {
+        $resultado = $vdao->create($vd);
+        $_SESSION["mensagem"] = $resultado ? "Venda registrada com sucesso!" : "Erro ao registrar a venda.";
     } else {
-        $resultado = $vedao->update($ve);
-        $_SESSION["mensagem"] = "Alterado com sucesso!";
+        $resultado = $vdao->update($vd);
+        $_SESSION["mensagem"] = $resultado ? "Venda atualizada com sucesso!" : "Erro ao atualizar a venda.";
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../view/gerenciavenda.php");
     exit();
 }
+?>
