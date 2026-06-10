@@ -2,14 +2,14 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/consulta.php";
-include_once $base . "model/dao/consultadao.php";
-include_once $base . "model/entity/pet.php";
-include_once $base . "model/dao/petdao.php";
-include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinariodao.php";
-include_once $base . "model/entity/sala.php";
-include_once $base . "model/dao/saladao.php";
+include_once $base . "entity/model/consulta.php";
+include_once $base . "entity/dao/consultadao.php";
+include_once $base . "entity/model/pet.php";
+include_once $base . "entity/dao/petdao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinariodao.php";
+include_once $base . "entity/model/sala.php";
+include_once $base . "entity/dao/saladao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -94,7 +94,7 @@ $salas = $saladao->read();
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label text-muted small">Data da Consulta</label>
-                                <input type="date" class="form-control custom-input" name="data" required>
+                                <input type="date" class="form-control custom-input" name="data_consulta" required>
                             </div>
                             <div class="col-6">
                                 <label class="form-label text-muted small">Horário</label>

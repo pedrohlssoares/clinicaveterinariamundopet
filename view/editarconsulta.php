@@ -2,14 +2,14 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/consulta.php";
-include_once $base . "model/dao/consultadao.php";
-include_once $base . "model/entity/pet.php";
-include_once $base . "model/dao/petdao.php";
-include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinariodao.php";
-include_once $base . "model/entity/sala.php";
-include_once $base . "model/dao/saladao.php";
+include_once $base . "entity/model/consulta.php";
+include_once $base . "entity/dao/consultadao.php";
+include_once $base . "entity/model/pet.php";
+include_once $base . "entity/dao/petdao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinariodao.php";
+include_once $base . "entity/model/sala.php";
+include_once $base . "entity/dao/saladao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -35,8 +35,9 @@ $idconsulta = is_object($cons_obj) ? $cons_obj->idconsulta : $cons_obj["idconsul
 $petconsultafk = is_object($cons_obj) ? $cons_obj->petconsultafk : $cons_obj["petconsultafk"];
 $veterinarioconsultafk = is_object($cons_obj) ? $cons_obj->veterinarioconsultafk : $cons_obj["veterinarioconsultafk"];
 $salaconsultafk = is_object($cons_obj) ? $cons_obj->salaconsultafk : $cons_obj["salaconsultafk"];
-$data = is_object($cons_obj) ? (isset($cons_obj->data_consulta) ? $cons_obj->data_consulta : $cons_obj->data) : ($cons_obj["data_consulta"] ?? $cons_obj["data"]);
+$data_consulta = is_object($cons_obj) ? $cons_obj->data_consulta : $cons_obj["data_consulta"];
 $horario = is_object($cons_obj) ? $cons_obj->horario : $cons_obj["horario"];
+$status = is_object($cons_obj) ? $cons_obj->status : $cons_obj["status"];
 $processos_feitos = is_object($cons_obj) ? $cons_obj->processos_feitos : $cons_obj["processos_feitos"];
 
 $pets = $petdao->read();
@@ -55,7 +56,8 @@ $salas = $saladao->read();
     <div class="card shadow-sm border-0">
         <div class="card-body p-4">
             <form method="post" action="../controller/consultacontroller.php">
-                <input type="hidden" name="idconsulta" value="<?php echo $idconsulta ?>">
+                <input type="hidden" name="idconsulta" value="<?php echo $idconsulta; ?>">
+                <input type="hidden" name="status" value="<?php echo htmlspecialchars($status); ?>">
 
                 <div class="row justify-content-center">
                     <div class="col-md-5 px-4">
@@ -119,7 +121,7 @@ $salas = $saladao->read();
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label text-muted small">Data da Consulta</label>
-                                <input type="date" class="form-control custom-input" name="data" value="<?php echo date('Y-m-d', strtotime($data)) ?>" required>
+                                <input type="date" class="form-control custom-input" name="data_consulta" value="<?php echo date('Y-m-d', strtotime($data_consulta)) ?>" required>
                             </div>
                             <div class="col-6">
                                 <label class="form-label text-muted small">Horário</label>

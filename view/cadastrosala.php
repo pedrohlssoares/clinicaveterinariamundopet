@@ -2,8 +2,8 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/sala.php";
-include_once $base . "model/dao/saladao.php";
+include_once $base . "entity/model/sala.php";
+include_once $base . "entity/dao/saladao.php";
 
 include __DIR__ . "/topo.html";
 ?>

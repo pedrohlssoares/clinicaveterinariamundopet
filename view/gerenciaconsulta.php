@@ -2,14 +2,14 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/consulta.php";
-include_once $base . "model/dao/consultadao.php";
-include_once $base . "model/entity/pet.php";
-include_once $base . "model/dao/petdao.php";
-include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinariodao.php";
-include_once $base . "model/entity/sala.php";
-include_once $base . "model/dao/saladao.php";
+include_once $base . "entity/model/consulta.php";
+include_once $base . "entity/dao/consultadao.php";
+include_once $base . "entity/model/pet.php";
+include_once $base . "entity/dao/petdao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinariodao.php";
+include_once $base . "entity/model/sala.php";
+include_once $base . "entity/dao/saladao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -42,6 +42,7 @@ if (isset($_SESSION["resultado"])) {
                     <th>Horário</th>
                     <th>Paciente (Pet)</th>
                     <th>Veterinário (CRMV)</th>
+                    <th>Status</th>
                     <th>Sala</th>
                     <th class="text-center">Ações</th>
                 </tr>
@@ -52,7 +53,7 @@ if (isset($_SESSION["resultado"])) {
                 unset($_SESSION["consultas_filtradas"]);
                 
                 if (is_null($lista) || empty($lista)) {
-                    echo "<tr><td colspan='6' class='text-center py-4 text-muted'>Nenhuma consulta agendada.</td></tr>";
+                    echo "<tr><td colspan='7' class='text-center py-4 text-muted'>Nenhuma consulta agendada.</td></tr>";
                 } else {
                     foreach ($lista as $item) {
                         $idconsulta = is_object($item) ? $item->idconsulta : $item["idconsulta"];
@@ -60,8 +61,9 @@ if (isset($_SESSION["resultado"])) {
                         $fk_vet = is_object($item) ? $item->veterinarioconsultafk : $item["veterinarioconsultafk"];
                         $fk_sala = is_object($item) ? $item->salaconsultafk : $item["salaconsultafk"];
                         
-                        $data_bruta = is_object($item) ? (isset($item->data_consulta) ? $item->data_consulta : (isset($item->data) ? $item->data : "")) : ($item["data_consulta"] ?? $item["data"]);
+                        $data_bruta = is_object($item) ? $item->data_consulta : $item["data_consulta"];
                         $horario = is_object($item) ? $item->horario : $item["horario"];
+                        $status = is_object($item) ? $item->status : $item["status"];
 
                         $dataFormatada = !empty($data_bruta) ? date("d/m/Y", strtotime($data_bruta)) : "Data Indefinida";
 
@@ -74,11 +76,14 @@ if (isset($_SESSION["resultado"])) {
                         $sala_obj = $saladao->readId($fk_sala);
                         $num_sala = $sala_obj ? (is_object($sala_obj) ? $sala_obj->numero : $sala_obj["numero"]) : "N/D";
 
+                        $badge_status = ($status == 'Agendada') ? 'bg-warning text-dark' : 'bg-success';
+
                         echo "<tr>";
                         echo "<td class='fw-bold'>{$dataFormatada}</td>";
                         echo "<td><span class='text-primary fw-bold'>{$horario}</span></td>";
                         echo "<td>{$nome_pet}</td>";
                         echo "<td>CRMV: {$crmv_vet}</td>";
+                        echo "<td><span class='badge {$badge_status} border'>{$status}</span></td>";
                         echo "<td><span class='badge bg-light text-dark border'>Sala {$num_sala}</span></td>";
                         echo "<td class='text-center'>";
                         echo "<a href='editarconsulta.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";

@@ -2,10 +2,10 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/remedio.php";
-include_once $base . "model/dao/remediodao.php";
-include_once $base . "model/entity/produto.php";
-include_once $base . "model/dao/produtodao.php";
+include_once $base . "entity/model/remedio.php";
+include_once $base . "entity/dao/remediodao.php";
+include_once $base . "entity/model/produto.php";
+include_once $base . "entity/dao/produtodao.php";
 include __DIR__ . "/topo.html";
 
 $prodao = new produtodao();

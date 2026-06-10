@@ -2,10 +2,10 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "model/entity/veterinario.php";
-include_once $base . "model/dao/veterinariodao.php";
-include_once $base . "model/entity/funcionario.php";
-include_once $base . "model/dao/funcionariodao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinariodao.php";
+include_once $base . "entity/model/funcionario.php";
+include_once $base . "entity/dao/funcionariodao.php";
 
 include __DIR__ . "/topo.html";
 
