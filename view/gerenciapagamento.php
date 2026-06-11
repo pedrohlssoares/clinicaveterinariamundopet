@@ -2,13 +2,12 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-
-include_once $base . "entity/model/pagamento.php";
-include_once $base . "entity/dao/pagamentodao.php";
-include_once $base . "entity/model/cliente.php";
-include_once $base . "entity/dao/clientedao.php";
-include_once $base . "entity/model/forma_pagamento.php";
-include_once $base . "entity/dao/forma_pagamentodao.php";
+include_once $base . "model/entity/pagamento.php";
+include_once $base . "model/dao/pagamentodao.php";
+include_once $base . "model/entity/cliente.php";
+include_once $base . "model/dao/clientedao.php";
+include_once $base . "model/entity/forma_pagamento.php";
+include_once $base . "model/dao/forma_pagamentodao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -28,7 +27,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);"><i class="bi bi-cash-coin text-success"></i> Fluxo de Faturamento Clínico</h2>
         <a href="cadastropagamento.php" class="btn btn-success shadow-sm">
-            <i class="bi bi-plus-lg"></i>Novo Lançamento
+            <i class="bi bi-plus-lg"></i> + Novo Lançamento
         </a>
     </div>
 
@@ -61,22 +60,21 @@ if (isset($_SESSION["resultado"])) {
                         $clientefk = is_object($item) ? $item->clientepagamentofk : $item["clientepagamentofk"];
                         $consultafk = is_object($item) ? $item->consultapagamentofk : $item["consultapagamentofk"];
                         $prescricaofk = is_object($item) ? $item->prescricaopagamentofk : $item["prescricaopagamentofk"];
+                        $vendafk = is_object($item) ? $item->vendapagamentofk : $item["vendapagamentofk"];
 
-                        // Busca o nome do cliente de forma relacional
                         $cli_obj = $clientedao->readId($clientefk);
                         $nome_cliente = $cli_obj ? (is_object($cli_obj) ? $cli_obj->nome : $cli_obj["nome"]) : "Desconhecido";
 
-                        // Busca o nome do método de pagamento
                         $fp_obj = $fpdao->readId($formafk);
                         $nome_forma = $fp_obj ? (is_object($fp_obj) ? $fp_obj->tipo : $fp_obj["tipo"]) : "Outros";
 
                         $dataFormatada = !empty($data) ? date("d/m/Y H:i", strtotime($data)) : "---";
                         
-                        // Consolida marcadores de vínculos adicionais
                         $vinculos = [];
                         if(!empty($consultafk)) $vinculos[] = "<span class='badge bg-light text-dark border'>Consulta #{$consultafk}</span>";
                         if(!empty($prescricaofk)) $vinculos[] = "<span class='badge bg-light text-dark border'>Prescrição #{$prescricaofk}</span>";
-                        $vinculos_str = empty($vinculos) ? "<span class='text-muted small'>Venda Direta</span>" : implode(" ", $vinculos);
+                        if(!empty($vendafk)) $vinculos[] = "<span class='badge bg-success-subtle text-success border border-success-subtle'>Venda #{$vendafk}</span>";
+                        $vinculos_str = empty($vinculos) ? "<span class='text-muted small'>Lançamento Avulso</span>" : implode(" ", $vinculos);
 
                         echo "<tr>";
                         echo "<td>{$dataFormatada}</td>";
