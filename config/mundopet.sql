@@ -171,7 +171,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mundopet`.`produto` (
   `idproduto` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
-  `quantidade` INT NOT NULL,
+  `quantidade` INT(11) NOT NULL,
   `descricao` VARCHAR(400) NOT NULL,
   `preco` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`idproduto`))
@@ -226,7 +226,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`remedio` (
   `idremedio` INT NOT NULL AUTO_INCREMENT,
-  `produtoremediofk` INT NOT NULL,
+  `produtoremediofk` INT(11) NOT NULL,
   `ativo` VARCHAR(40) NOT NULL,
   `lote` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idremedio`),
@@ -271,10 +271,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mundopet`.`venda`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mundopet`.`venda` (
+  `idvenda` INT NOT NULL AUTO_INCREMENT,
+  `produtovendafk` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  `valor_unitario` DECIMAL(8,2) NOT NULL,
+  PRIMARY KEY (`idvenda`),
+  INDEX `fk_venda_produtos1_idx` (`produtovendafk` ASC),
+  CONSTRAINT `fk_venda_produtos1`
+    FOREIGN KEY (`produtovendafk`)
+    REFERENCES `mundopet`.`produto` (`idproduto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mundopet`.`pagamento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
-  `idpagamento` INT NOT NULL AUTO_INCREMENT,
+  `idpagamento` INT(11) NOT NULL,
   `prestacoes` INT NOT NULL,
   `valor` DECIMAL(8,2) NOT NULL,
   `data_pagamento` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
@@ -282,11 +300,13 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
   `clientepagamentofk` INT NOT NULL,
   `consultapagamentofk` INT NULL,
   `prescricaopagamentofk` INT NULL,
+  `vendapagamentofk` INT NULL,
   PRIMARY KEY (`idpagamento`),
   INDEX `fk_pagamento_forma_pagamento1_idx` (`formapagamentofk` ASC),
   INDEX `fk_pagamento_cliente1_idx` (`clientepagamentofk` ASC),
   INDEX `fk_pagamento_consulta1_idx` (`consultapagamentofk` ASC),
   INDEX `fk_pagamento_prescricao1_idx` (`prescricaopagamentofk` ASC),
+  INDEX `fk_pagamento_venda1_idx` (`vendapagamentofk` ASC),
   CONSTRAINT `fk_pagamento_cliente1`
     FOREIGN KEY (`clientepagamentofk`)
     REFERENCES `mundopet`.`cliente` (`idcliente`)
@@ -306,44 +326,26 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
     FOREIGN KEY (`prescricaopagamentofk`)
     REFERENCES `mundopet`.`prescricao` (`idprescricao`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mundopet`.`venda`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mundopet`.`venda` (
-  `idvenda` INT NOT NULL AUTO_INCREMENT,
-  `pagamentovendafk` INT NOT NULL,
-  `produtovendafk` INT NOT NULL,
-  `quantidade` INT NOT NULL,
-  `valor_unitario` DECIMAL(8,2) NOT NULL,
-  PRIMARY KEY (`idvenda`),
-  INDEX `fk_venda_pagamento1_idx` (`pagamentovendafk` ASC),
-  INDEX `fk_venda_produtos1_idx` (`produtovendafk` ASC),
-  CONSTRAINT `fk_venda_pagamento1`
-    FOREIGN KEY (`pagamentovendafk`)
-    REFERENCES `mundopet`.`pagamento` (`idpagamento`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_venda_produtos1`
-    FOREIGN KEY (`produtovendafk`)
-    REFERENCES `mundopet`.`produto` (`idproduto`)
+  CONSTRAINT `fk_pagamento_venda1`
+    FOREIGN KEY (`vendapagamentofk`)
+    REFERENCES `mundopet`.`venda` (`idvenda`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `mundopet`.`despesa`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`despesa` (
-  `iddespesa` INT NOT NULL AUTO_INCREMENT,
+  `iddespesa` INT NOT NULL,
   `preco` DECIMAL(8,2) NOT NULL,
   `despesadata` DATE NOT NULL,
   `descricao` VARCHAR(400) NOT NULL,
   PRIMARY KEY (`iddespesa`))
 ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
