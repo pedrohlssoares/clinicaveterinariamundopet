@@ -5,10 +5,9 @@ class vendaDao {
     public function create(venda $venda) {
         try {
             $pdo = conexao::conectar();
-            $sql = "INSERT INTO venda(pagamentovendafk, produtovendafk, quantidade, valor_unitario) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO venda(produtovendafk, quantidade, valor_unitario) VALUES (?, ?, ?)";
             $query = $pdo->prepare($sql);
             $query->execute([
-                $venda->pagamentovendafk,
                 $venda->produtovendafk,
                 $venda->quantidade,
                 $venda->valor_unitario
@@ -23,13 +22,13 @@ class vendaDao {
     public function read() {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idvenda, pagamentovendafk, produtovendafk, quantidade, valor_unitario FROM venda";
+            $sql = "SELECT idvenda, produtovendafk, quantidade, valor_unitario FROM venda ORDER BY idvenda DESC";
             $result = $pdo->query($sql);
             $lista = [];
             foreach($result as $linha) {
                 $lista[] = new venda(
-                    $linha["idvenda"], $linha["pagamentovendafk"], 
-                    $linha["produtovendafk"], $linha["quantidade"], $linha["valor_unitario"]
+                    $linha["idvenda"], $linha["produtovendafk"], 
+                    $linha["quantidade"], $linha["valor_unitario"]
                 );
             }
             conexao::desconectar();
@@ -42,7 +41,7 @@ class vendaDao {
     public function readID($idvenda) {
         try {
             $pdo = conexao::conectar();
-            $sql = "SELECT idvenda, pagamentovendafk, produtovendafk, quantidade, valor_unitario FROM venda WHERE idvenda = ?";
+            $sql = "SELECT idvenda, produtovendafk, quantidade, valor_unitario FROM venda WHERE idvenda = ?";
             $query = $pdo->prepare($sql);
             $query->execute([$idvenda]);
             $linha = $query->fetch(PDO::FETCH_ASSOC);
@@ -50,8 +49,8 @@ class vendaDao {
 
             if ($linha) {
                 return new venda(
-                    $linha["idvenda"], $linha["pagamentovendafk"], 
-                    $linha["produtovendafk"], $linha["quantidade"], $linha["valor_unitario"]
+                    $linha["idvenda"], $linha["produtovendafk"], 
+                    $linha["quantidade"], $linha["valor_unitario"]
                 );
             }
             return null;
@@ -63,11 +62,11 @@ class vendaDao {
     public function update(venda $venda) {
         try {
             $pdo = conexao::conectar();
-            $sql = "UPDATE venda SET pagamentovendafk = ?, produtovendafk = ?, quantidade = ?, valor_unitario = ? WHERE idvenda = ?";
+            $sql = "UPDATE venda SET produtovendafk = ?, quantidade = ?, valor_unitario = ? WHERE idvenda = ?";
             $query = $pdo->prepare($sql);
             $query->execute([
-                $venda->pagamentovendafk, $venda->produtovendafk, 
-                $venda->quantidade, $venda->valor_unitario, $venda->idvenda
+                $venda->produtovendafk, $venda->quantidade, 
+                $venda->valor_unitario, $venda->idvenda
             ]);
             conexao::desconectar();
             return true;
