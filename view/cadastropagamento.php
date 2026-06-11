@@ -2,7 +2,6 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-
 include_once $base . "entity/model/pagamento.php";
 include_once $base . "entity/dao/pagamentodao.php";
 include_once $base . "entity/model/cliente.php";
@@ -13,8 +12,11 @@ include_once $base . "entity/model/consulta.php";
 include_once $base . "entity/dao/consultadao.php";
 include_once $base . "entity/model/prescricao.php";
 include_once $base . "entity/dao/prescricaodao.php";
+include_once $base . "entity/model/venda.php";
+include_once $base . "entity/dao/vendadao.php";
 include_once $base . "entity/model/pet.php";
 include_once $base . "entity/dao/petdao.php";
+
 
 include __DIR__ . "/topo.html";
 
@@ -22,12 +24,14 @@ $cdao = new clienteDao();
 $fpdao = new forma_pagamentoDao();
 $condao = new consultaDao();
 $prdao = new prescricaoDao();
+$vdao = new vendaDao();
 $petdao = new petdao();
 
 $clientes = $cdao->read();
 $formas = $fpdao->read();
 $consultas = $condao->read();
 $prescricoes = $prdao->read();
+$vendas = $vdao->read();
 ?>
 
 <div class="container mt-5">
@@ -97,24 +101,22 @@ $prescricoes = $prdao->read();
                     </div>
 
                     <div class="col-md-5 px-4 border-start">
-                        <h4 class="h5 mb-3 border-bottom pb-2" style="color: var(--pet-blue);">Vínculos Clínicos (Opcional)</h4>
+                        <h4 class="h5 mb-3 border-bottom pb-2" style="color: var(--pet-blue);">Vínculos Clínicos e Vendas (Opcional)</h4>
                         
                         <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a uma Consulta</label>
                             <select class="form-select custom-input" name="consultapagamentofk">
-                                <option value="">— Venda Direta de Balcão / Sem Consulta —</option>
+                                <option value="">— Sem Consulta Atrelada —</option>
                                 <?php 
                                 if($consultas){
                                     foreach ($consultas as $con) {
                                         $id = is_object($con) ? $con->idconsulta : $con["idconsulta"];
                                         $data = is_object($con) ? ($con->data_consulta ?? $con["data"]) : ($con["data_consulta"] ?? $con["data"]);
                                         $petfk = is_object($con) ? $con->petconsultafk : $con["petconsultafk"];
-                                        
                                         $pet = $petdao->readId($petfk);
                                         $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Pet";
                                         $dataFormatada = date('d/m/Y', strtotime($data));
-                                        
-                                        echo "<option value='{$id}'>Cód #{$id} - {$dataFormatada} (Pet: {$nomePet})</option>";
+                                        echo "<option value='{$id}'>Consulta #{$id} - {$dataFormatada} (Pet: {$nomePet})</option>";
                                     }
                                 }
                                 ?>
@@ -122,7 +124,7 @@ $prescricoes = $prdao->read();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Vincular a uma Prescrição de Medicamentos</label>
+                            <label class="form-label text-muted small">Vincular a uma Prescrição</label>
                             <select class="form-select custom-input" name="prescricaopagamentofk">
                                 <option value="">— Nenhuma Prescrição Atrelada —</option>
                                 <?php 
@@ -137,6 +139,23 @@ $prescricoes = $prdao->read();
                                 ?>
                             </select>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted fw-bold small text-success">Vincular a uma Venda (Balcão)</label>
+                            <select class="form-select custom-input border-success" name="vendapagamentofk">
+                                <option value="">— Nenhuma Venda Atrelada —</option>
+                                <?php 
+                                if($vendas){
+                                    foreach ($vendas as $v) {
+                                        $id = is_object($v) ? $v->idvenda : $v["idvenda"];
+                                        $val = is_object($v) ? $v->valor_unitario : $v["valor_unitario"];
+                                        echo "<option value='{$id}'>Venda #{$id} (R$ {$val})</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
 
