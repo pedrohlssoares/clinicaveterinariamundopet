@@ -8,8 +8,9 @@ class pagamento {
     private $clientepagamentofk;
     private $consultapagamentofk;
     private $prescricaopagamentofk;
+    private $vendapagamentofk;
 
-    public function __construct($idpagamento, $prestacoes, $valor, $data_pagamento, $formapagamentofk, $clientepagamentofk, $consultapagamentofk, $prescricaopagamentofk) {
+    public function __construct($idpagamento, $prestacoes, $valor, $data_pagamento, $formapagamentofk, $clientepagamentofk, $consultapagamentofk, $prescricaopagamentofk, $vendapagamentofk) {
         $this->idpagamento = $idpagamento;
         $this->prestacoes = $prestacoes;
         $this->valor = $valor;
@@ -18,6 +19,7 @@ class pagamento {
         $this->clientepagamentofk = $clientepagamentofk;
         $this->consultapagamentofk = $consultapagamentofk;
         $this->prescricaopagamentofk = $prescricaopagamentofk;
+        $this->vendapagamentofk = $vendapagamentofk;
     }
 
     public function __get($key) { return $this->{$key}; }
