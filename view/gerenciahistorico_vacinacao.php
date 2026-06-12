@@ -27,7 +27,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);">Histórico de Vacinação</h2>
         <a href="cadastrohistorico_vacinacao.php" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-lg"></i> + Registrar Vacinação
+            <i class="bi bi-plus-lg"></i> Registrar Vacinação
         </a>
     </div>
 
