@@ -16,7 +16,7 @@ if (isset($_GET["idfuncionario"])) {
     $resultado = $fdao->delete($_GET["idfuncionario"]);
     $_SESSION["mensagem"] = "Excluído com sucesso!";
     $_SESSION["resultado"] = $resultado;
-    header("location:../view/index.php");
+    header("location:../view/gerenciafuncionario.php");
     exit();
 }
 
@@ -55,7 +55,7 @@ if (isset($_POST["btGravar"])) {
         $_SESSION["mensagem"] = $resultado ? "Funcionário atualizado com sucesso!" : "Erro ao atualizar funcionário.";
     }
     
-    header("location:../view/index.php"); 
+    header("location:../view/gerenciafuncionario.php"); 
     exit();
 }
 ?>
