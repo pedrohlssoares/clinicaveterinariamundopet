@@ -17,6 +17,7 @@ if (isset($_GET["idpagamento"])) {
 }
 
 if (isset($_POST["btGravar"])) {
+
     $consultafk = !empty($_POST["consultapagamentofk"]) ? $_POST["consultapagamentofk"] : null;
     $prescricaofk = !empty($_POST["prescricaopagamentofk"]) ? $_POST["prescricaopagamentofk"] : null;
     $vendafk = !empty($_POST["vendapagamentofk"]) ? $_POST["vendapagamentofk"] : null;
@@ -24,11 +25,18 @@ if (isset($_POST["btGravar"])) {
     $valor = str_replace(',', '.', $_POST["valor"]);
     $valor = floatval($valor);
 
+    $data_pagamento = str_replace('T', ' ', $_POST["data_pagamento"]);
+    if (strlen($data_pagamento) == 16) {
+        $data_pagamento .= ':00';
+    }
+
+    $idpagamento = !empty($_POST["idpagamento"]) ? $_POST["idpagamento"] : null;
+
     $pag = new pagamento(
-        $_POST["idpagamento"],
+        $idpagamento,
         intval($_POST["prestacoes"]),
         $valor,
-        $_POST["data_pagamento"],
+        $data_pagamento,
         $_POST["formapagamentofk"],
         $_POST["clientepagamentofk"],
         $consultafk,
@@ -36,9 +44,9 @@ if (isset($_POST["btGravar"])) {
         $vendafk
     );
 
-    if (empty($_POST["idpagamento"])) {
+    if (empty($idpagamento)) {
         $resultado = $pdao->create($pag);
-        $_SESSION["mensagem"] = $resultado ? "Pagamento registrado com sucesso!" : "Erro ao registrar o pagamento.";
+        $_SESSION["mensagem"] = $resultado ? "Pagamento registrado com sucesso!" : "Erro ao registrar o pagamento. Verifique o banco de dados.";
     } else {
         $resultado = $pdao->update($pag);
         $_SESSION["mensagem"] = $resultado ? "Pagamento atualizado com sucesso!" : "Erro ao atualizar o pagamento.";
