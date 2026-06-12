@@ -27,7 +27,7 @@ if (isset($_SESSION["resultado"])) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-light" style="color: var(--pet-dark);"><i class="bi bi-cash-coin text-success"></i> Fluxo de Faturamento Clínico</h2>
         <a href="cadastropagamento.php" class="btn btn-success shadow-sm">
-            <i class="bi bi-plus-lg"></i> + Novo Lançamento
+            <i class="bi bi-plus-lg"></i>Novo Lançamento
         </a>
     </div>
 
