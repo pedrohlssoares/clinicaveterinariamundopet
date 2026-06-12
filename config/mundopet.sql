@@ -292,7 +292,7 @@ ENGINE = InnoDB;
 -- Table `mundopet`.`pagamento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
-  `idpagamento` INT(11) NOT NULL,
+  `idpagamento` INT NOT NULL AUTO_INCREMENT,
   `prestacoes` INT NOT NULL,
   `valor` DECIMAL(8,2) NOT NULL,
   `data_pagamento` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
@@ -339,7 +339,7 @@ ENGINE = InnoDB;
 -- Table `mundopet`.`despesa`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mundopet`.`despesa` (
-  `iddespesa` INT NOT NULL,
+  `iddespesa` INT NOT NULL AUTO_INCREMENT,
   `preco` DECIMAL(8,2) NOT NULL,
   `despesadata` DATE NOT NULL,
   `descricao` VARCHAR(400) NOT NULL,
