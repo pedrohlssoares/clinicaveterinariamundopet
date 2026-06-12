@@ -2,9 +2,10 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
+
 include_once $base . "entity/model/venda.php";
 include_once $base . "entity/dao/vendadao.php";
-include_once $base . "entity/moodel/produto.php";
+include_once $base . "entity/model/produto.php";
 include_once $base . "entity/dao/produtodao.php";
 
 include __DIR__ . "/topo.html";
@@ -77,4 +78,5 @@ function atualizarPrecoUnitario() {
     document.getElementById("precoInput").value = preco;
 }
 </script>
+
 <?php include __DIR__ . "/rodape.html"; ?>
