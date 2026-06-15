@@ -2,16 +2,18 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "entity/model/prescricao.php";
-include_once $base . "entity/dao/prescricaodao.php";
-include_once $base . "entity/model/consulta.php";
-include_once $base . "entity/dao/consultadao.php";
-include_once $base . "entity/model/remedio.php";
-include_once $base . "entity/dao/remediodao.php";
-include_once $base . "entity/model/vacina.php";
-include_once $base . "entity/dao/vacinadao.php";
-include_once $base . "entity/model/pet.php";
-include_once $base . "entity/dao/petdao.php";
+
+$model_path = file_exists($base . "model/entity/") ? "model/" : "entity/";
+include_once $base ."entity/model/prescricao.php";
+include_once $base ."entity/dao/prescricaodao.php";
+include_once $base ."entity/model/consulta.php";
+include_once $base ."entity/dao/consultadao.php";
+include_once $base ."entity/model/remedio.php";
+include_once $base ."entity/dao/remediodao.php";
+include_once $base ."entity/model/vacina.php";
+include_once $base ."entity/dao/vacinadao.php";
+include_once $base ."entity/model/pet.php";
+include_once $base ."entity/dao/petdao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -31,7 +33,7 @@ if (isset($_SESSION["resultado"])) {
 
 <div class="container mt-5 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-light" style="color: var(--pet-dark);">Gerenciar Prescrições</h2>
+        <h2 class="fw-light" style="color: var(--pet-dark);">Gerenciar Prescrições Médicas</h2>
         <a href="cadastroprescricao.php" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-lg"></i>Nova Prescrição
         </a>
@@ -62,23 +64,22 @@ if (isset($_SESSION["resultado"])) {
                         $vacinafk = is_object($item) ? $item->vacinaprescricaofk : $item["vacinaprescricaofk"];
                         $dosagem = is_object($item) ? $item->dosagem : $item["dosagem"];
 
-                        // Busca dados da consulta e do pet
-                        $cons_obj = $cdao->readId($consultafk);
+                        $cons_obj = method_exists($cdao, 'readID') ? $cdao->readID($consultafk) : $cdao->readId($consultafk);
                         $info_consulta = "Consulta Desconhecida";
                         if ($cons_obj) {
                             $data_bruta = is_object($cons_obj) ? (isset($cons_obj->data_consulta) ? $cons_obj->data_consulta : (isset($cons_obj->data) ? $cons_obj->data : "")) : ($cons_obj["data_consulta"] ?? $cons_obj["data"]);
                             $petfk = is_object($cons_obj) ? $cons_obj->petconsultafk : $cons_obj["petconsultafk"];
-                            $pet = $petdao->readId($petfk);
+                            
+                            $pet = method_exists($petdao, 'readID') ? $petdao->readID($petfk) : $petdao->readId($petfk);
                             $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Pet";
+                            
                             $info_consulta = (!empty($data_bruta) ? date('d/m/Y', strtotime($data_bruta)) : "Data N/D") . " - " . $nomePet;
                         }
 
-                        // Busca dados do remedio
-                        $rem_obj = $remediofk ? $rdao->readId($remediofk) : null;
+                        $rem_obj = $remediofk ? (method_exists($rdao, 'readID') ? $rdao->readID($remediofk) : $rdao->readId($remediofk)) : null;
                         $nome_remedio = $rem_obj ? (is_object($rem_obj) ? $rem_obj->ativo : $rem_obj["ativo"]) : "---";
 
-                        // Busca dados da vacina
-                        $vac_obj = $vacinafk ? $vdao->readId($vacinafk) : null;
+                        $vac_obj = $vacinafk ? (method_exists($vdao, 'readID') ? $vdao->readID($vacinafk) : $vdao->readId($vacinafk)) : null;
                         $nome_vacina = $vac_obj ? (is_object($vac_obj) ? $vac_obj->ativo : $vac_obj["ativo"]) : "---";
 
                         echo "<tr>";
@@ -87,8 +88,10 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td>{$nome_vacina}</td>";
                         echo "<td>{$dosagem}</td>";
                         echo "<td class='text-center'>";
-                        echo "<a href='editarprescricao.php?idprescricao={$id}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";
-                        echo "<a href='../controller/prescricaocontroller.php?idprescricao={$id}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Tem a certeza que deseja excluir esta prescrição?')\" title='Excluir'><img src='img/apagar.png' width='16'></a>";
+                        
+                        // APENAS BOTÃO DE EDITAR. BOTÃO DE EXCLUIR REMOVIDO POR AUDITORIA MÉDICA.
+                        echo "<a href='editarprescricao.php?idprescricao={$id}' class='btn btn-sm btn-outline-primary' title='Editar'><img src='img/alterar.png' width='16'> Editar</a>";
+                        
                         echo "</td>";
                         echo "</tr>";
                     }

@@ -2,14 +2,15 @@
 session_start();
 $base = __DIR__ . '/../';  
 include_once $base . "config/conexao.php";
-include_once $base . "entity/model/consulta.php";
-include_once $base . "entity/dao/consultadao.php";
-include_once $base . "entity/model/pet.php";
-include_once $base . "entity/dao/petdao.php";
-include_once $base . "entity/model/veterinario.php";
-include_once $base . "entity/dao/veterinariodao.php";
-include_once $base . "entity/model/sala.php";
-include_once $base . "entity/dao/saladao.php";
+
+include_once $base ."entity/model/consulta.php";
+include_once $base ."entity/dao/consultadao.php";
+include_once $base ."entity/model/pet.php";
+include_once $base ."entity/dao/petdao.php";
+include_once $base ."entity/model/veterinario.php";
+include_once $base ."entity/dao/veterinariodao.php";
+include_once $base ."entity/model/sala.php";
+include_once $base ."entity/dao/saladao.php";
 
 include __DIR__ . "/topo.html";
 
@@ -42,7 +43,7 @@ if (isset($_SESSION["resultado"])) {
                     <th>Horário</th>
                     <th>Paciente (Pet)</th>
                     <th>Veterinário (CRMV)</th>
-                    <th>Status</th>
+                    <th>Status Rápido</th>
                     <th>Sala</th>
                     <th class="text-center">Ações</th>
                 </tr>
@@ -67,27 +68,42 @@ if (isset($_SESSION["resultado"])) {
 
                         $dataFormatada = !empty($data_bruta) ? date("d/m/Y", strtotime($data_bruta)) : "Data Indefinida";
 
-                        $pet_obj = $petdao->readId($fk_pet);
+                        $pet_obj = method_exists($petdao, 'readID') ? $petdao->readID($fk_pet) : $petdao->readId($fk_pet);
                         $nome_pet = $pet_obj ? (is_object($pet_obj) ? $pet_obj->nome : $pet_obj["nome"]) : "Desconhecido";
 
-                        $vet_obj = $vetdao->readId($fk_vet);
+                        $vet_obj = method_exists($vetdao, 'readID') ? $vetdao->readID($fk_vet) : $vetdao->readId($fk_vet);
                         $crmv_vet = $vet_obj ? (is_object($vet_obj) ? $vet_obj->crmv : $vet_obj["crmv"]) : "N/D";
 
-                        $sala_obj = $saladao->readId($fk_sala);
+                        $sala_obj = method_exists($saladao, 'readID') ? $saladao->readID($fk_sala) : $saladao->readId($fk_sala);
                         $num_sala = $sala_obj ? (is_object($sala_obj) ? $sala_obj->numero : $sala_obj["numero"]) : "N/D";
 
-                        $badge_status = ($status == 'Agendada') ? 'bg-warning text-dark' : 'bg-success';
+                        $badge_status = 'btn-secondary';
+                        if ($status == 'Agendada') $badge_status = 'btn-warning';
+                        if ($status == 'Realizada') $badge_status = 'btn-success';
+                        if ($status == 'Cancelada') $badge_status = 'btn-danger';
 
                         echo "<tr>";
                         echo "<td class='fw-bold'>{$dataFormatada}</td>";
                         echo "<td><span class='text-primary fw-bold'>{$horario}</span></td>";
                         echo "<td>{$nome_pet}</td>";
                         echo "<td>CRMV: {$crmv_vet}</td>";
-                        echo "<td><span class='badge {$badge_status} border'>{$status}</span></td>";
+                        
+                        echo "<td>";
+                        echo "<div class='dropdown'>";
+                        echo "<button class='btn btn-sm {$badge_status} dropdown-toggle border-0 text-dark fw-semibold' type='button' data-bs-toggle='dropdown' aria-expanded='false'>{$status}</button>";
+                        echo "<ul class='dropdown-menu shadow-sm'>";
+                        echo "<li><a class='dropdown-item' href='../controller/consultacontroller.php?idconsulta={$idconsulta}&novo_status=Agendada'><i class='bi bi-clock-history text-warning me-2'></i>Agendada</a></li>";
+                        echo "<li><a class='dropdown-item' href='../controller/consultacontroller.php?idconsulta={$idconsulta}&novo_status=Realizada'><i class='bi bi-check-circle-fill text-success me-2'></i>Realizada</a></li>";
+                        echo "<li><a class='dropdown-item' href='../controller/consultacontroller.php?idconsulta={$idconsulta}&novo_status=Cancelada'><i class='bi bi-x-circle-fill text-danger me-2'></i>Cancelada</a></li>";
+                        echo "</ul>";
+                        echo "</div>";
+                        echo "</td>";
+
                         echo "<td><span class='badge bg-light text-dark border'>Sala {$num_sala}</span></td>";
                         echo "<td class='text-center'>";
-                        echo "<a href='editarconsulta.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-primary me-2' title='Editar'><img src='img/alterar.png' width='16'></a>";
-                        echo "<a href='../controller/consultacontroller.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Deseja cancelar/excluir este agendamento?')\" title='Excluir'><img src='img/apagar.png' width='16'></a>";
+                        
+                        echo "<a href='editarconsulta.php?idconsulta={$idconsulta}' class='btn btn-sm btn-outline-primary' title='Editar Consulta Completa'><img src='img/alterar.png' width='16'> Editar</a>";
+                        
                         echo "</td>";
                         echo "</tr>";
                     }
