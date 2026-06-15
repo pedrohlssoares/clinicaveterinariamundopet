@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`cliente` (
   CONSTRAINT `fk_clientes_endereco`
     FOREIGN KEY (`enderecoclientefk`)
     REFERENCES `mundopet`.`endereco` (`idendereco`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pet` (
   CONSTRAINT `fk_pet_clientes1`
     FOREIGN KEY (`clientepetfk`)
     REFERENCES `mundopet`.`cliente` (`idcliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -97,8 +97,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`funcionario` (
   CONSTRAINT `fk_funcionario_endereco1`
     FOREIGN KEY (`enderecofuncionariofk`)
     REFERENCES `mundopet`.`endereco` (`idendereco`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -115,8 +115,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`veterinario` (
   CONSTRAINT `fk_veterinario_funcionario1`
     FOREIGN KEY (`funcionarioveterinariofk`)
     REFERENCES `mundopet`.`funcionario` (`idfuncionario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -139,18 +139,18 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`consulta` (
   CONSTRAINT `fk_consulta_pet1`
     FOREIGN KEY (`petconsultafk`)
     REFERENCES `mundopet`.`pet` (`idpet`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_consulta_sala1`
     FOREIGN KEY (`salaconsultafk`)
     REFERENCES `mundopet`.`sala` (`numero`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_consulta_veterinario1`
     FOREIGN KEY (`veterinarioconsultafk`)
     REFERENCES `mundopet`.`veterinario` (`idveterinario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -191,8 +191,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`vacina` (
   CONSTRAINT `fk_vacinas_produtos1`
     FOREIGN KEY (`produtovacinafk`)
     REFERENCES `mundopet`.`produto` (`idproduto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -211,13 +211,13 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`historico_vacinacao` (
   CONSTRAINT `fk_historico_pet1`
     FOREIGN KEY (`pethistorico_vacinacaofk`)
     REFERENCES `mundopet`.`pet` (`idpet`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_historico_vacinacao_vacina1`
     FOREIGN KEY (`vacinahistorico_vacinacaofk`)
     REFERENCES `mundopet`.`vacina` (`idvacina`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -234,8 +234,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`remedio` (
   CONSTRAINT `fk_remedio_produtos1`
     FOREIGN KEY (`produtoremediofk`)
     REFERENCES `mundopet`.`produto` (`idproduto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -255,18 +255,18 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`prescricao` (
   CONSTRAINT `fk_prescricao_consulta1`
     FOREIGN KEY (`consultaprescricaofk`)
     REFERENCES `mundopet`.`consulta` (`idconsulta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_prescricao_remedio1`
     FOREIGN KEY (`remedioprescricaofk`)
     REFERENCES `mundopet`.`remedio` (`idremedio`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
   CONSTRAINT `fk_prescricao_vacina1`
     FOREIGN KEY (`vacinaprescricaofk`)
     REFERENCES `mundopet`.`vacina` (`idvacina`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -283,8 +283,8 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`venda` (
   CONSTRAINT `fk_venda_produtos1`
     FOREIGN KEY (`produtovendafk`)
     REFERENCES `mundopet`.`produto` (`idproduto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -310,28 +310,28 @@ CREATE TABLE IF NOT EXISTS `mundopet`.`pagamento` (
   CONSTRAINT `fk_pagamento_cliente1`
     FOREIGN KEY (`clientepagamentofk`)
     REFERENCES `mundopet`.`cliente` (`idcliente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pagamento_forma_pagamento1`
     FOREIGN KEY (`formapagamentofk`)
     REFERENCES `mundopet`.`forma_pagamento` (`idforma_pagamento`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pagamento_consulta1`
     FOREIGN KEY (`consultapagamentofk`)
     REFERENCES `mundopet`.`consulta` (`idconsulta`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pagamento_prescricao1`
     FOREIGN KEY (`prescricaopagamentofk`)
     REFERENCES `mundopet`.`prescricao` (`idprescricao`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pagamento_venda1`
     FOREIGN KEY (`vendapagamentofk`)
     REFERENCES `mundopet`.`venda` (`idvenda`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
