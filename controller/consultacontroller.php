@@ -3,51 +3,54 @@ session_start();
 $base = __DIR__ . '/../';
 
 include_once $base . "config/conexao.php";
-include_once $base . "entity/model/consulta.php";
-include_once $base . "entity/dao/consultadao.php";
 
-$codao = new consultadao();
+include_once $base . "entity/model/prescricao.php";
+include_once $base . "entity/dao/prescricaodao.php";
 
-if (isset($_GET["txtDataFiltro"])) {
-    $resultado = $codao->readPorData($_GET["txtDataFiltro"]);
-    $_SESSION["consultas_filtradas"] = $resultado;
-    header("location:../view/gerenciaconsulta.php");
-    exit();
-}
 
-if (isset($_GET["idconsulta"])) {
-    $resultado = $codao->delete($_GET["idconsulta"]);
-    $_SESSION["mensagem"] = $resultado ? "Consulta cancelada/excluída com sucesso!" : "Erro ao excluir a consulta.";
-    $_SESSION["resultado"] = $resultado;
-    header("location:../view/gerenciaconsulta.php");
+$prdao = new prescricaoDao();
+
+if (isset($_GET["idprescricao"])) {
+    $_SESSION["mensagem"] = "Acesso Negado: Não é permitida a exclusão de prescrições médicas por motivos de auditoria clínica.";
+    $_SESSION["resultado"] = false;
+    header("location:../view/gerenciaprescricao.php");
     exit();
 }
 
 if (isset($_POST["btGravar"])) {
-    
-    $status_consulta = isset($_POST["status"]) && !empty($_POST["status"]) ? $_POST["status"] : 'Agendada';
-    
-    $co = new consulta(
-        $_POST["idconsulta"],
-        $_POST["petconsultafk"],
-        $_POST["veterinarioconsultafk"] ?? null,
-        $_POST["salaconsultafk"] ?? null,
-        $_POST["data_consulta"],
-        $_POST["horario"], 
-        $status_consulta,
-        $_POST["processos_feitos"] ?? null
+    $consultafk = !empty($_POST["consultaprescricaofk"]) ? $_POST["consultaprescricaofk"] : null;
+    $remediofk = !empty($_POST["remedioprescricaofk"]) ? $_POST["remedioprescricaofk"] : null;
+    $vacinafk = !empty($_POST["vacinaprescricaofk"]) ? $_POST["vacinaprescricaofk"] : null;
+
+    $pr = new prescricao(
+        $_POST["idprescricao"],
+        $consultafk,
+        $remediofk,
+        $vacinafk,
+        $_POST["dosagem"]
     );
 
-    if (empty($_POST["idconsulta"])) {
-        $resultado = $codao->create($co);
-        $_SESSION["mensagem"] = $resultado ? "Agendamento realizado com sucesso!" : "Erro ao agendar consulta.";
+    if (empty($_POST["idprescricao"])) {
+        $resultado = $prdao->create($pr);
+        if ($resultado === true) {
+            $_SESSION["mensagem"] = "Prescrição cadastrada com sucesso!";
+            $_SESSION["resultado"] = true;
+        } else {
+            $_SESSION["mensagem"] = "FALHA NO MYSQL: " . $resultado;
+            $_SESSION["resultado"] = false;
+        }
     } else {
-        $resultado = $codao->update($co);
-        $_SESSION["mensagem"] = $resultado ? "Consulta atualizada com sucesso!" : "Erro ao alterar consulta.";
+        $resultado = $prdao->update($pr);
+        if ($resultado === true) {
+            $_SESSION["mensagem"] = "Prescrição atualizada com sucesso!";
+            $_SESSION["resultado"] = true;
+        } else {
+            $_SESSION["mensagem"] = "FALHA NO MYSQL: " . $resultado;
+            $_SESSION["resultado"] = false;
+        }
     }
 
-    $_SESSION["resultado"] = $resultado;
-    header("location:../view/gerenciaconsulta.php");
+    header("location:../view/gerenciaprescricao.php");
     exit();
 }
 ?>
