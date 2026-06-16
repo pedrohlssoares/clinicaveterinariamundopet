@@ -8,7 +8,6 @@ include_once $base . "entity/dao/forma_pagamentodao.php";
 
 $fpdao = new forma_pagamentoDao();
 
-// Rota de Exclusão
 if (isset($_GET["idforma_pagamento"])) {
     $resultado = $fpdao->delete($_GET["idforma_pagamento"]);
     $_SESSION["mensagem"] = $resultado ? "Forma de pagamento excluída com sucesso!" : "Erro ao excluir a forma de pagamento.";
@@ -17,7 +16,6 @@ if (isset($_GET["idforma_pagamento"])) {
     exit();
 }
 
-// Rota de Inserção / Atualização
 if (isset($_POST["btGravar"])) {
     $fp = new forma_pagamento(
         $_POST["idforma_pagamento"],

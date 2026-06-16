@@ -11,7 +11,6 @@ include_once $base . "entity/dao/despesadao.php";
 
 $ddao = new despesaDao();
 
-// Rota de Exclusão
 if (isset($_GET["iddespesa"])) {
     $resultado = $ddao->delete($_GET["iddespesa"]);
     $_SESSION["mensagem"] = $resultado ? "Despesa excluída com sucesso!" : "Erro ao excluir a despesa.";
@@ -20,7 +19,6 @@ if (isset($_GET["iddespesa"])) {
     exit();
 }
 
-// Rota de Inserção Única (Regra de Negócio: Bloqueado alterações pós-registro)
 if (isset($_POST["btGravar"])) {
     if (!empty($_POST["iddespesa"])) {
         $_SESSION["mensagem"] = "Erro: Uma despesa lançada não pode ser alterada.";
@@ -33,7 +31,7 @@ if (isset($_POST["btGravar"])) {
     $preco = floatval($preco);
 
     $d = new despesa(
-        null, // ID nulo para auto_increment no banco
+        null,
         $preco,
         $_POST["despesadata"],
         $_POST["descricao"]
