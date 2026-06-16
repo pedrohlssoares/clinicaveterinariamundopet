@@ -8,7 +8,7 @@ include_once $base . "config/conexao.php";
 include_once $base . "entity/model/endereco.php";
 include_once $base . "entity/dao/enderecodao.php";
 
-$endao = new enderecodao();
+$endao = new enderecoDao();
 
 
 if (isset($_GET["idendereco"])) {

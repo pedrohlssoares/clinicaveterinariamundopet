@@ -105,24 +105,24 @@ $vendas = $vdao->read();
                         
                         <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a uma Consulta</label>
-                            <select class="form-select custom-input" name="consultapagamentofk">
+                            <select class="form-select custom-input" name="consultapagamentofk" id="selectConsulta">
                                 <option value="">— Sem Consulta Atrelada —</option>
                                 <?php 
                                 if($consultas){
                                     foreach ($consultas as $con) {
                                         $id = is_object($con) ? $con->idconsulta : $con["idconsulta"];
-                                        $data = is_object($con) ? ($con->data_consulta ?? $con["data"]) : ($con["data_consulta"] ?? $con["data"]);
+                                        $data = is_object($con) ? $con->data_consulta : $con["data_consulta"];
                                         $petfk = is_object($con) ? $con->petconsultafk : $con["petconsultafk"];
                                         $pet = $petdao->readId($petfk);
                                         $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Pet";
+                                        $idcliente = $pet ? (is_object($pet) ? $pet->clientepetfk : $pet["clientepetfk"]) : "";
                                         $dataFormatada = date('d/m/Y', strtotime($data));
-                                        echo "<option value='{$id}'>Consulta #{$id} - {$dataFormatada} (Pet: {$nomePet})</option>";
+                                        echo "<option value='{$id}' data-cliente='{$idcliente}'>Consulta #{$id} - {$dataFormatada} (Pet: {$nomePet})</option>";
                                     }
                                 }
                                 ?>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a uma Prescrição</label>
                             <select class="form-select custom-input" name="prescricaopagamentofk">
@@ -168,5 +168,15 @@ $vendas = $vdao->read();
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('selectConsulta').addEventListener('change', function() {
+    const option = this.options[this.selectedIndex];
+    const idcliente = option.getAttribute('data-cliente');
+    if (idcliente) {
+        document.querySelector('select[name="clientepagamentofk"]').value = idcliente;
+    }
+});
+</script>
 
 <?php include __DIR__ . "/rodape.html"; ?>

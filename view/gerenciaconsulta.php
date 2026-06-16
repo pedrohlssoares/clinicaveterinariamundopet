@@ -11,13 +11,16 @@ include_once $base ."entity/model/veterinario.php";
 include_once $base ."entity/dao/veterinariodao.php";
 include_once $base ."entity/model/sala.php";
 include_once $base ."entity/dao/saladao.php";
+include_once $base ."entity/model/funcionario.php";
+include_once $base ."entity/dao/funcionariodao.php";
 
 include __DIR__ . "/topo.html";
 
-$codao = new consultadao();
-$petdao = new petdao();
-$vetdao = new veterinariodao();
-$saladao = new saladao();
+$codao = new consultaDao();
+$petdao = new petDao();
+$vetdao = new veterinarioDao();
+$saladao = new salaDao();
+$fdao = new funcionarioDao();
 
 if (isset($_SESSION["resultado"])) {
     $classe = $_SESSION["resultado"] ? "alert-success" : "alert-danger";
@@ -42,7 +45,7 @@ if (isset($_SESSION["resultado"])) {
                     <th>Data</th>
                     <th>Horário</th>
                     <th>Paciente (Pet)</th>
-                    <th>Veterinário (CRMV)</th>
+                    <th>Veterinário</th>
                     <th>Status Rápido</th>
                     <th>Sala</th>
                     <th class="text-center">Ações</th>
@@ -71,8 +74,16 @@ if (isset($_SESSION["resultado"])) {
                         $pet_obj = method_exists($petdao, 'readID') ? $petdao->readID($fk_pet) : $petdao->readId($fk_pet);
                         $nome_pet = $pet_obj ? (is_object($pet_obj) ? $pet_obj->nome : $pet_obj["nome"]) : "Desconhecido";
 
-                        $vet_obj = method_exists($vetdao, 'readID') ? $vetdao->readID($fk_vet) : $vetdao->readId($fk_vet);
-                        $crmv_vet = $vet_obj ? (is_object($vet_obj) ? $vet_obj->crmv : $vet_obj["crmv"]) : "N/D";
+                        $vet_obj = $vetdao->readID($fk_vet);
+                        $nome_vet = "N/D";
+                        if ($vet_obj) {
+                            $fk_func = is_object($vet_obj) ? $vet_obj->funcionarioveterinariofk : $vet_obj["funcionarioveterinariofk"];
+                            $func_obj = $fdao->readID($fk_func);
+                            $nome_vet = $func_obj ? (is_object($func_obj) ? $func_obj->nome : $func_obj["nome"]) : "N/D";
+                        }
+
+                        $sala_obj = method_exists($saladao, 'readID') ? $saladao->readID($fk_sala) : $saladao->readId($fk_sala);
+                        $num_sala = $sala_obj ? (is_object($sala_obj) ? $sala_obj->numero : $sala_obj["numero"]) : "N/D";
 
                         $sala_obj = method_exists($saladao, 'readID') ? $saladao->readID($fk_sala) : $saladao->readId($fk_sala);
                         $num_sala = $sala_obj ? (is_object($sala_obj) ? $sala_obj->numero : $sala_obj["numero"]) : "N/D";
@@ -86,7 +97,7 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td class='fw-bold'>{$dataFormatada}</td>";
                         echo "<td><span class='text-primary fw-bold'>{$horario}</span></td>";
                         echo "<td>{$nome_pet}</td>";
-                        echo "<td>CRMV: {$crmv_vet}</td>";
+                        echo "<td>{$nome_vet}</td>";
                         
                         echo "<td>";
                         echo "<div class='dropdown'>";

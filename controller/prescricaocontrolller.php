@@ -8,7 +8,7 @@ include_once $base . "config/conexao.php";
 include_once $base . "model/entity/funcionario.php";
 include_once $base . "model/dao/funcionariodao.php";
 
-$prdao = new prescricaodao();
+$prdao = new prescricaoDao();
 
 
 if (isset($_GET["idprescricao"])) {
@@ -23,7 +23,9 @@ if (isset($_POST["btGravar"])) {
     $pr = new prescricao(
         $_POST["idprescricao"],
         $_POST["consultaprescricaofk"] ?? null,
-        $_POST["remedioprescricaofk"] ?? null
+        $_POST["remedioprescricaofk"] ?? null,
+        $_POST["vacinaprescricaofk"] ??  null,
+        $_POST["dosagem"]
     );
 
     if ($_POST["idprescricao"] == "") {
@@ -35,6 +37,6 @@ if (isset($_POST["btGravar"])) {
     }
 
     $_SESSION["resultado"] = $resultado;
-    header("location:../index.php");
+    header("location:../gerenciaprescricao.php");
     exit();
 }

@@ -3,25 +3,26 @@ include_once __DIR__ . "/../../config/conexao.php";
 
 class consultaDao {
     public function create(consulta $consulta) {
-        try {
-            $pdo = conexao::conectar();
-            $sql = "INSERT INTO consulta(petconsultafk, veterinarioconsultafk, salaconsultafk, data_consulta, horario, status, processos_feitos) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $query = $pdo->prepare($sql);
-            $query->execute([
-                $consulta->petconsultafk,
-                $consulta->veterinarioconsultafk,
-                $consulta->salaconsultafk,
-                $consulta->data_consulta,
-                $consulta->horario,
-                $consulta->status,
-                $consulta->processos_feitos
-            ]);
-            conexao::desconectar();
-            return true;
-        } catch(PDOException $exception) {
-            return false; 
-        }
+    try {
+        $pdo = conexao::conectar();
+        $sql = "INSERT INTO consulta(petconsultafk, veterinarioconsultafk, salaconsultafk, data_consulta, horario, status, processos_feitos) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = $pdo->prepare($sql);
+        $query->execute([
+            $consulta->petconsultafk,
+            $consulta->veterinarioconsultafk,
+            $consulta->salaconsultafk,
+            $consulta->data_consulta,
+            $consulta->horario,
+            $consulta->status,
+            $consulta->processos_feitos
+        ]);
+        conexao::desconectar();
+        return true;
+    } catch(PDOException $exception) {
+        die("ERRO: " . $exception->getMessage()); 
+        return false; 
     }
+}
 
     public function read() {
         try {

@@ -8,7 +8,6 @@ class prescricaoDao {
             $sql = "INSERT INTO prescricao(consultaprescricaofk, remedioprescricaofk, vacinaprescricaofk, dosagem) VALUES (?, ?, ?, ?)";
             $query = $pdo->prepare($sql);
             
-            // Extrai para variáveis locais primeiro para forçar o PHP a disparar o método mágico __get()
             $consulta = $prescricao->consultaprescricaofk;
             $remedio = $prescricao->remedioprescricaofk;
             $vacina = $prescricao->vacinaprescricaofk;
@@ -16,7 +15,6 @@ class prescricaoDao {
             
             $query->bindValue(1, $consulta, PDO::PARAM_INT);
             
-            // Agora a validação funciona perfeitamente
             if ($remedio == null || $remedio === "") {
                 $query->bindValue(2, null, PDO::PARAM_NULL);
             } else {
@@ -84,7 +82,6 @@ class prescricaoDao {
             $sql = "UPDATE prescricao SET consultaprescricaofk = ?, remedioprescricaofk = ?, vacinaprescricaofk = ?, dosagem = ? WHERE idprescricao = ?";
             $query = $pdo->prepare($sql);
             
-            // Extrai para variáveis locais primeiro
             $consulta = $prescricao->consultaprescricaofk;
             $remedio = $prescricao->remedioprescricaofk;
             $vacina = $prescricao->vacinaprescricaofk;

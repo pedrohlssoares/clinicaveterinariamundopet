@@ -29,14 +29,6 @@ $produtos = $prodao->read();
                     <div class="col-md-6 px-4">
                         <h4 class="h5 mb-3 border-bottom pb-2" style="color: var(--pet-blue);">Dados do Remédio</h4>
                         <div class="mb-3">
-                            <label class="form-label text-muted small">Princípio Ativo</label>
-                            <input type="text" class="form-control custom-input" name="ativo" placeholder="Ex: Meloxicam 10mg" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Número do Lote</label>
-                            <input type="number" class="form-control custom-input" name="lote" placeholder="Ex: 102938" required>
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a um Produto (Estoque)</label>
                             <select class="form-select custom-input" name="produtoremediofk" required>
                                 <option value="">— Selecione um produto —</option>
@@ -56,6 +48,14 @@ $produtos = $prodao->read();
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Princípio Ativo</label>
+                            <input type="text" class="form-control custom-input" name="ativo" placeholder="Ex: Meloxicam 10mg" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Número do Lote</label>
+                            <input type="number" class="form-control custom-input" name="lote" placeholder="Ex: 102938" required>
                         </div>
                     </div>
                 </div>

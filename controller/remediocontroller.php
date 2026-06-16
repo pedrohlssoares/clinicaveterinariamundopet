@@ -6,7 +6,7 @@ include_once $base . "config/conexao.php";
 include_once $base . "entity/model/remedio.php";
 include_once $base . "entity/dao/remediodao.php";
 
-$rdao = new remediodao();
+$rdao = new remedioDao();
 
 if (isset($_GET["idremedio"])) {
     $resultado = $rdao->delete($_GET["idremedio"]);

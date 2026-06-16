@@ -69,16 +69,16 @@ $vacinas = $vdao->read();
                                 <?php 
                                 if($consultas){
                                     foreach ($consultas as $cons) {
-                                        $id = is_object($cons) ? $cons->idconsulta : $cons["idconsulta"];
-                                        $data_bruta = is_object($cons) ? (isset($cons->data_consulta) ? $cons->data_consulta : (isset($cons->data) ? $cons->data : "")) : ($cons["data_consulta"] ?? $cons["data"]);
-                                        $petfk = is_object($cons) ? $cons->petconsultafk : $cons["petconsultafk"];
-                                        
-                                        $pet = $petdao->readId($petfk);
-                                        $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Desconhecido";
-                                        $dataFormatada = !empty($data_bruta) ? date('d/m/Y', strtotime($data_bruta)) : "Data Indefinida";
-                                        
-                                        $sel = ($id == $consultaprescricaofk) ? "selected" : "";
-                                        echo "<option value='{$id}' {$sel}>Consulta: {$dataFormatada} - Pet: {$nomePet}</option>";
+                                    $id = is_object($cons) ? $cons->idconsulta : $cons["idconsulta"];
+                                    $data_bruta = is_object($cons) ? $cons->data_consulta : $cons["data_consulta"];
+                                    $petfk = is_object($cons) ? $cons->petconsultafk : $cons["petconsultafk"];
+                                    
+                                    $pet = $petdao->readId($petfk);
+                                    $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Desconhecido";
+                                    
+                                    $dataFormatada = !empty($data_bruta) ? date('d/m/Y', strtotime($data_bruta)) : "Data Indefinida";
+                                    
+                                    echo "<option value='{$id}'>Consulta: {$dataFormatada} - Pet: {$nomePet}</option>";
                                     }
                                 }
                                 ?>

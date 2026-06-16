@@ -4,7 +4,7 @@ class conexao
     private static $dbName = "mundopet";
     private static $dbHost = "localhost";
     private static $dbUser = "root";
-    private static $dbPass = "root";
+    private static $dbPass = "";
     private static $con = null;
 
     public static function conectar()

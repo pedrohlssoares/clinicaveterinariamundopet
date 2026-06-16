@@ -67,9 +67,8 @@ if (isset($_SESSION["resultado"])) {
                         $cons_obj = method_exists($cdao, 'readID') ? $cdao->readID($consultafk) : $cdao->readId($consultafk);
                         $info_consulta = "Consulta Desconhecida";
                         if ($cons_obj) {
-                            $data_bruta = is_object($cons_obj) ? (isset($cons_obj->data_consulta) ? $cons_obj->data_consulta : (isset($cons_obj->data) ? $cons_obj->data : "")) : ($cons_obj["data_consulta"] ?? $cons_obj["data"]);
+                            $data_bruta = is_object($cons_obj) ? $cons_obj->data_consulta : $cons_obj["data_consulta"];
                             $petfk = is_object($cons_obj) ? $cons_obj->petconsultafk : $cons_obj["petconsultafk"];
-                            
                             $pet = method_exists($petdao, 'readID') ? $petdao->readID($petfk) : $petdao->readId($petfk);
                             $nomePet = $pet ? (is_object($pet) ? $pet->nome : $pet["nome"]) : "Pet";
                             
@@ -89,7 +88,6 @@ if (isset($_SESSION["resultado"])) {
                         echo "<td>{$dosagem}</td>";
                         echo "<td class='text-center'>";
                         
-                        // APENAS BOTÃO DE EDITAR. BOTÃO DE EXCLUIR REMOVIDO POR AUDITORIA MÉDICA.
                         echo "<a href='editarprescricao.php?idprescricao={$id}' class='btn btn-sm btn-outline-primary' title='Editar'><img src='img/alterar.png' width='16'> Editar</a>";
                         
                         echo "</td>";

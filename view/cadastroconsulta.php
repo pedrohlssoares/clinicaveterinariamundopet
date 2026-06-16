@@ -6,20 +6,26 @@ include_once $base . "entity/model/consulta.php";
 include_once $base . "entity/dao/consultadao.php";
 include_once $base . "entity/model/pet.php";
 include_once $base . "entity/dao/petdao.php";
-include_once $base . "entity/model/veterinario.php";
-include_once $base . "entity/dao/veterinariodao.php";
 include_once $base . "entity/model/sala.php";
 include_once $base . "entity/dao/saladao.php";
+include_once $base . "entity/model/funcionario.php";
+include_once $base . "entity/dao/funcionariodao.php";
+include_once $base . "entity/model/veterinario.php";
+include_once $base . "entity/dao/veterinariodao.php";
 
 include __DIR__ . "/topo.html";
 
-$petdao = new petdao();
-$vetdao = new veterinariodao();
-$saladao = new saladao();
+$petdao = new petDao();
+$saladao = new salaDao();
+$fdao = new funcionarioDao();
+$vetdao = new veterinarioDao();
 
 $pets = $petdao->read();
-$veterinarios = $vetdao->read();
 $salas = $saladao->read();
+$funcionarios = $fdao->read();
+$veterinarios = $vetdao->read();
+
+
 ?>
 
 <div class="container mt-5">
@@ -61,16 +67,17 @@ $salas = $saladao->read();
                                 <option value="">— Selecione o Veterinário —</option>
                                 <?php 
                                 if($veterinarios){
-                                    foreach ($veterinarios as $vet) {
-                                        $id = is_object($vet) ? $vet->idveterinario : $vet["idveterinario"];
-                                        $crmv = is_object($vet) ? $vet->crmv : $vet["crmv"];
-                                        echo "<option value='{$id}'>CRMV: {$crmv}</option>";
+                                    foreach ($veterinarios as $v) {
+                                        $idvet = is_object($v) ? $v->idveterinario : $v["idveterinario"];
+                                        $fk_func = is_object($v) ? $v->funcionarioveterinariofk : $v["funcionarioveterinariofk"];
+                                        $func_obj = method_exists($fdao, 'readID') ? $fdao->readID($fk_func) : $fdao->readId($fk_func);
+                                        $nome = $func_obj ? (is_object($func_obj) ? $func_obj->nome : $func_obj["nome"]) : "Desconhecido";
+                                        echo "<option value='{$idvet}'>{$nome}</option>";
                                     }
                                 }
                                 ?>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label text-muted small">Sala de Atendimento</label>
                             <select class="form-select custom-input" name="salaconsultafk" required>

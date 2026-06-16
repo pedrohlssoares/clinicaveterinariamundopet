@@ -29,17 +29,6 @@ $produtos = $prodao->read();
                 <div class="row justify-content-center">
                     <div class="col-md-6 px-4">
                         <h4 class="h5 mb-3 border-bottom pb-2" style="color: var(--pet-blue);">Detalhes da Vacina</h4>
-                        
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Princípio Ativo / Nome da Vacina</label>
-                            <input type="text" class="form-control custom-input" name="ativo" placeholder="Ex: Vacina V10" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label text-muted small">Número do Lote</label>
-                            <input type="text" class="form-control custom-input" name="lote" placeholder="Ex: L-48392" required>
-                        </div>
-
                         <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a um Produto (Estoque / Valor)</label>
                             <select class="form-select custom-input" name="produtovacinafk" required>
@@ -54,6 +43,15 @@ $produtos = $prodao->read();
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Princípio Ativo / Nome da Vacina</label>
+                            <input type="text" class="form-control custom-input" name="ativo" placeholder="Ex: Vacina V10" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Número do Lote</label>
+                            <input type="text" class="form-control custom-input" name="lote" placeholder="Ex: L-48392" required>
                         </div>
                     </div>
                 </div>

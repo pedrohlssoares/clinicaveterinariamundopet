@@ -30,11 +30,6 @@ $funcionarios = $fundao->read();
                 <div class="row justify-content-center">
                     <div class="col-md-8 px-4">
                         <div class="mb-3">
-                            <label class="form-label text-muted small">CRMV</label>
-                            <input type="text" class="form-control custom-input" name="crmv" placeholder="Digite o CRMV" required>
-                        </div>
-
-                        <div class="mb-3">
                             <label class="form-label text-muted small">Vincular a um Funcionário (Obrigatório)</label>
                             <select class="form-select custom-input" name="funcionarioveterinariofk" required>
                                 <option value="">— Selecione o Funcionário —</option>
@@ -47,7 +42,10 @@ $funcionarios = $fundao->read();
                                 ?>
                             </select>
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">CRMV</label>
+                            <input type="text" class="form-control custom-input" name="crmv" placeholder="Digite o CRMV" required>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label text-muted small">Descrição / Especialidade</label>
                             <textarea class="form-control custom-input" name="descricao" rows="3" placeholder="Ex: Especialista em Felinos"></textarea>
